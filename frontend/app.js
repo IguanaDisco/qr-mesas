@@ -100,12 +100,12 @@ function verificarExistenciaMesa(data) {
 
                 if (invitadoEncontrado) {
                     result.innerText = `Mesa escaneada: ${numeroMesa}\nInvitado: ${invitadoEncontrado.nombre}`;
-                    alert("Código QR correcto");
 
                     if (!invitadoEncontrado.Escaneado) {
+                        alert("Código QR correcto"); // Mensaje cuando se escanea por primera vez
                         actualizarEstadoMesa(numeroMesa, invitado, true); // Cambiar a "Escaneado: true"
                     } else {
-                        result.innerText += "\nEl código QR ya ha sido escaneado.";
+                        alert("Código QR ya ha sido escaneado"); // Mensaje cuando ya está escaneado
                     }
                 } else {
                     result.innerText = `Invitado no válido en la mesa ${numeroMesa}.`;
@@ -113,7 +113,7 @@ function verificarExistenciaMesa(data) {
             } else {
                 result.innerText = `Mesa no válida: ${numeroMesa}`;
             }
-        });
+        }, { onlyOnce: true }); // Escuchar solo una vez para evitar múltiples alertas
     } catch (error) {
         console.error("Error al decodificar el código QR:", error);
         result.innerText = "Código QR no válido o formato incorrecto.";
