@@ -102,10 +102,10 @@ function verificarExistenciaMesa(data) {
                     result.innerText = `Mesa escaneada: ${numeroMesa}\nInvitado: ${invitadoEncontrado.nombre}`;
                     alert("Código QR correcto");
 
-                    if (!invitadoEncontrado.ocupada) {
-                        actualizarEstadoMesa(numeroMesa, invitado, true);
+                    if (!invitadoEncontrado.Escaneado) {
+                        actualizarEstadoMesa(numeroMesa, invitado, true); // Cambiar a "Escaneado: true"
                     } else {
-                        result.innerText += "\nEl invitado ya está ocupado.";
+                        result.innerText += "\nEl código QR ya ha sido escaneado.";
                     }
                 } else {
                     result.innerText = `Invitado no válido en la mesa ${numeroMesa}.`;
@@ -123,7 +123,7 @@ function verificarExistenciaMesa(data) {
 }
 
 // Función para actualizar el estado de la mesa
-function actualizarEstadoMesa(numeroMesa, invitado, ocupada) {
+function actualizarEstadoMesa(numeroMesa, invitado, escaneado) {
     const mesaRef = ref(database, `mesas/${numeroMesa}/invitados`);
     get(mesaRef).then((snapshot) => {
         if (snapshot.exists()) {
@@ -131,11 +131,11 @@ function actualizarEstadoMesa(numeroMesa, invitado, ocupada) {
             const invitadoIndex = invitados.findIndex((inv) => inv.nombre === invitado);
 
             if (invitadoIndex !== -1) {
-                invitados[invitadoIndex].ocupada = ocupada;
+                invitados[invitadoIndex].Escaneado = escaneado; // Actualizar el campo "Escaneado"
                 set(mesaRef, invitados)
                     .then(() => {
-                        console.log(`Mesa ${numeroMesa} (${invitado}) marcada como ${ocupada ? "ocupada" : "disponible"}.`);
-                        mostrarEstadoMesas();
+                        console.log(`Mesa ${numeroMesa} (${invitado}) marcada como ${escaneado ? "escaneado" : "no escaneado"}.`);
+                        mostrarEstadoMesas(); // Actualizar la lista de mesas
                     })
                     .catch((error) => {
                         console.error("Error al actualizar la mesa:", error);
@@ -212,8 +212,10 @@ function mostrarEstadoMesas() {
             mesasArray.forEach((mesa) => {
                 if (mesa.invitados && mesa.invitados.length > 0) {
                     mesa.invitados.forEach((invitado) => {
-                        const estado = invitado.ocupada ? "Ocupada" : "Disponible";
-                        const color = invitado.ocupada ? "red" : "green";
+                        // Usar el campo "Escaneado" en lugar de "ocupada"
+                        const escaneado = invitado.Escaneado !== undefined ? invitado.Escaneado : false;
+                        const estado = escaneado ? "Escaneado" : "No escaneado";
+                        const color = escaneado ? "green" : "red"; // Cambiar colores según el estado
 
                         const row = document.createElement("tr");
                         row.innerHTML = `
@@ -223,6 +225,15 @@ function mostrarEstadoMesas() {
                         `;
                         tbody.appendChild(row);
                     });
+                } else {
+                    // Si no hay invitados en la mesa
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td style="border: 1px solid #ccc; padding: 10px;">${mesa.numeroMesa}</td>
+                        <td style="border: 1px solid #ccc; padding: 10px;">Sin invitados</td>
+                        <td style="border: 1px solid #ccc; padding: 10px; background-color: gray; color: white;">No escaneado</td>
+                    `;
+                    tbody.appendChild(row);
                 }
             });
         } else {
