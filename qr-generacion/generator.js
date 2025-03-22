@@ -132,6 +132,37 @@ async function generarQR(numeroMesa, invitado, fechaFiesta, horaFiesta) {
     }
 }
 
+// Función para generar un código QR y subirlo a ImgBB
+async function generarYSubirQR(numeroMesa, invitado, fechaFiesta, horaFiesta) {
+    return new Promise((resolve, reject) => {
+        const data = JSON.stringify({ numeroMesa, invitado, fechaFiesta, horaFiesta });
+
+        QRCode.toCanvas(data, { width: 200 }, async (err, canvas) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+
+            // Convertir el canvas a un blob
+            canvas.toBlob(async (blob) => {
+                if (!blob) {
+                    reject(new Error("No se pudo convertir el canvas a blob."));
+                    return;
+                }
+
+                // Subir la imagen a ImgBB
+                const qrImageUrl = await subirImagenABb(blob);
+                if (!qrImageUrl) {
+                    reject(new Error("No se pudo subir la imagen a ImgBB."));
+                    return;
+                }
+
+                resolve(qrImageUrl);
+            }, "image/png");
+        });
+    });
+}
+
 // Función para guardar la mesa, el invitado y la URL del QR en Firebase
 function guardarMesa(numeroMesa, invitado, qrImageUrl, fechaFiesta, horaFiesta) {
     const mesaRef = ref(database, `mesas/${numeroMesa}/invitados`);
@@ -201,7 +232,16 @@ function procesarDatosExcel(datosExcel) {
 // Función para cargar los datos en Firebase
 async function cargarDatosEnFirebase(datos, fechaFiesta, horaFiesta) {
     for (const { numeroMesa, invitado } of datos) {
-        await guardarMesa(numeroMesa, invitado, null, fechaFiesta, horaFiesta);
+        try {
+            // Generar y subir el código QR
+            const qrImageUrl = await generarYSubirQR(numeroMesa, invitado, fechaFiesta, horaFiesta);
+
+            // Guardar los datos en Firebase
+            await guardarMesa(numeroMesa, invitado, qrImageUrl, fechaFiesta, horaFiesta);
+            console.log(`Invitado ${invitado} guardado en Firebase.`);
+        } catch (error) {
+            console.error(`Error al procesar al invitado ${invitado}:`, error);
+        }
     }
     alert("Datos cargados correctamente en Firebase.");
 }
@@ -330,6 +370,19 @@ function mostrarMesas(mesas) {
                 const celdaInvitado = document.createElement("td");
                 celdaInvitado.textContent = invitado.nombre;
                 fila.appendChild(celdaInvitado);
+
+                // Celda para el código QR
+                const celdaQR = document.createElement("td");
+                if (invitado.qrImageUrl) {
+                    const imgQR = document.createElement("img");
+                    imgQR.src = invitado.qrImageUrl;
+                    imgQR.alt = "Código QR";
+                    imgQR.style.maxWidth = "100px";
+                    celdaQR.appendChild(imgQR);
+                } else {
+                    celdaQR.textContent = "Código QR no disponible";
+                }
+                fila.appendChild(celdaQR);
 
                 // Celda para el estado de escaneado
                 const celdaEscaneado = document.createElement("td");
