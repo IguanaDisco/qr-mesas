@@ -59,76 +59,13 @@ async function generarQR(numeroMesa, invitado, fechaFiesta, horaFiesta) {
     try {
         console.log("Datos para el código QR:", { numeroMesa, invitado, fechaFiesta, horaFiesta });
 
-        // Ocultar la invitación anterior
-        invitacionContainer.style.display = "none";
+        // Guardar los datos en Firebase sin generar el código QR
+        await guardarMesa(numeroMesa, invitado, null, fechaFiesta, horaFiesta);
 
-        // Limpiar el contenedor del código QR antes de generar uno nuevo
-        qrCodeDiv.innerHTML = "";
-
-        // Crear un objeto con los datos
-        const data = JSON.stringify({ numeroMesa, invitado, fechaFiesta, horaFiesta });
-        console.log("Datos convertidos a JSON:", data);
-
-        // Generar el código QR
-        QRCode.toCanvas(data, { width: 200 }, async (err, canvas) => {
-            if (err) {
-                console.error("Error al generar el código QR:", err);
-                alert("Hubo un error al generar el código QR. Inténtalo de nuevo.");
-            } else {
-                console.log("Código QR generado correctamente.");
-                qrCodeDiv.appendChild(canvas);
-
-                // Convertir el canvas a un blob
-                canvas.toBlob(async (blob) => {
-                    if (!blob) {
-                        console.error("No se pudo convertir el canvas a blob.");
-                        alert("Hubo un error al generar el código QR. Inténtalo de nuevo.");
-                        return;
-                    }
-
-                    console.log("Canvas convertido a blob.");
-                    const qrImageUrl = await subirImagenABb(blob);
-
-                    if (!qrImageUrl) {
-                        console.error("No se pudo subir la imagen a ImgBB.");
-                        alert("Hubo un error al subir la imagen. Inténtalo de nuevo.");
-                        return;
-                    }
-
-                    console.log("Imagen subida a ImgBB:", qrImageUrl);
-                    await guardarMesa(numeroMesa, invitado, qrImageUrl, fechaFiesta, horaFiesta);
-
-                    // Mostrar la invitación
-                    const invitacionWeb = `
-                        Quiero invitarte a mi fiesta 🎉
-                        Fecha: ${fechaFiesta}
-                        Hora: ${horaFiesta}
-                        Debe presentar este código QR en portería.
-
-                        Mesa: ${numeroMesa}
-                        Invitado: ${invitado}
-                    `;
-
-                    invitacionTexto.innerHTML = `
-                        <p>${invitacionWeb}</p>
-                        <img src="${qrImageUrl}" alt="Código QR" style="max-width: 200px; margin-top: 10px;">
-                    `;
-
-                    invitacionContainer.classList.add("contenedor-verde");
-                    invitacionContainer.style.display = "block";
-
-                    const mensajeWhatsApp = encodeURIComponent(`
-                        ${invitacionWeb}
-
-                        Ver el código QR: ${qrImageUrl}
-                    `);
-                    enviarWhatsApp.href = `https://wa.me/?text=${mensajeWhatsApp}`;
-                }, "image/png");
-            }
-        });
+        alert("Invitación generada y guardada en Firebase correctamente.");
     } catch (error) {
         console.error("Error en generarQR:", error);
-        alert("Hubo un error al generar el código QR. Inténtalo de nuevo.");
+        alert("Hubo un error al generar la invitación. Inténtalo de nuevo.");
     }
 }
 
@@ -168,7 +105,7 @@ function guardarMesa(numeroMesa, invitado, qrImageUrl, fechaFiesta, horaFiesta) 
     const mesaRef = ref(database, `mesas/${numeroMesa}/invitados`);
     const nuevoInvitado = {
         nombre: invitado,
-        qrImageUrl,
+        qrImageUrl, // Puede ser null si no se genera un código QR
         fechaFiesta,
         horaFiesta,
         Escaneado: false // Agregar el campo "Escaneado"
@@ -473,15 +410,19 @@ onValue(mesasRef, (snapshot) => {
     }
 });
 
-// Manejar el envío del formulario
+// Manejar el envío del formulario qr-form
 qrForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Evitar que el formulario se envíe
+
+    // Obtener los valores del formulario
     const numeroMesa = numeroMesaInput.value.trim();
     const invitado = invitadoInput.value.trim();
     const fechaFiesta = fechaFiestaInput.value;
     const horaFiesta = horaFiestaInput.value;
 
+    // Validar que todos los campos estén completos
     if (numeroMesa && invitado && fechaFiesta && horaFiesta) {
+        // Guardar los datos en Firebase sin generar el código QR
         await generarQR(numeroMesa, invitado, fechaFiesta, horaFiesta);
     } else {
         alert("Por favor, completa todos los campos.");
