@@ -201,43 +201,29 @@ async function cargarDatosEnFirebase(datos, fechaFiesta, horaFiesta) {
     alert("Datos cargados correctamente en Firebase.");
 }
 
-// Evento para subir el archivo Excel
-document.getElementById('archivo-excel').addEventListener('change', async (e) => {
-    console.log("Archivo seleccionado:", e.target.files[0]); // Verifica si el archivo se detecta
-    const archivo = e.target.files[0];
-    if (!archivo) return;
+// Evento para el nuevo formulario de importación de Excel
+document.getElementById('form-importar-excel').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const archivo = document.getElementById('archivo-excel').files[0];
+    const fechaFiesta = document.getElementById('fecha-fiesta-importar').value;
+    const horaFiesta = document.getElementById('hora-fiesta-importar').value;
+
+    if (!archivo || !fechaFiesta || !horaFiesta) {
+        alert("Por favor, completa todos los campos.");
+        return;
+    }
 
     try {
         const datosExcel = await leerArchivoExcel(archivo);
         const datosProcesados = procesarDatosExcel(datosExcel);
         console.log("Datos procesados:", datosProcesados);
 
-        // Guardar los datos procesados en una variable global
-        window.datosImportados = datosProcesados;
-        alert("Archivo procesado correctamente. Ahora asigna la fecha y hora de la fiesta.");
+        await cargarDatosEnFirebase(datosProcesados, fechaFiesta, horaFiesta);
     } catch (error) {
-        console.error("Error al leer el archivo Excel:", error);
+        console.error("Error al procesar el archivo Excel:", error);
         alert("Hubo un error al procesar el archivo. Inténtalo de nuevo.");
     }
-});
-
-// Evento para asignar fecha y hora
-document.getElementById('asignar-fecha-hora').addEventListener('click', () => {
-    const fechaFiesta = document.getElementById('fecha-fiesta').value;
-    const horaFiesta = document.getElementById('hora-fiesta').value;
-
-    if (!fechaFiesta || !horaFiesta) {
-        alert("Por favor, selecciona una fecha y hora de la fiesta.");
-        return;
-    }
-
-    if (!window.datosImportados || window.datosImportados.length === 0) {
-        alert("No hay datos importados para cargar.");
-        return;
-    }
-
-    // Cargar los datos en Firebase
-    cargarDatosEnFirebase(window.datosImportados, fechaFiesta, horaFiesta);
 });
 
 let invitadoActual = null; // Almacena el nombre del invitado actualmente visible
