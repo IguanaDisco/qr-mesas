@@ -30,26 +30,39 @@ const btnMostrarMesas = document.getElementById("btn-mostrar-mesas");
 const mesasContainer = document.getElementById("mesas-container");
 const mesasList = document.getElementById("mesas-list");
 const videoContainer = document.getElementById("video-container");
-const scanningIndicator = document.getElementById("scanning-indicator"); // Indicador de escaneo
-const overlay = document.getElementById("overlay"); // Fondo oscuro para el popup
-const btnDetenerCamara = document.getElementById("btn-detener-camara"); // Botón para detener la cámara
-const btnReiniciar = document.getElementById("btn-reiniciar"); // Botón para reiniciar el escaneo
-const cameraError = document.getElementById("camera-error"); // Mensaje de error de la cámara
+const scanningIndicator = document.getElementById("scanning-indicator");
+const overlay = document.getElementById("overlay");
+const btnDetenerCamara = document.getElementById("btn-detener-camara");
+const btnReiniciar = document.getElementById("btn-reiniciar");
+const cameraError = document.getElementById("camera-error");
 
 let isScanning = true; // Controla si se sigue escaneando
 let mesaEscaneada = null; // Almacena la mesa escaneada
 
-// Acceder a la cámara
-navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
-    .then(function(stream) {
-        video.srcObject = stream;
-        video.play();
-        requestAnimationFrame(tick);
-    })
-    .catch(function(err) {
-        console.error("Error al acceder a la cámara:", err);
-        cameraError.style.display = "block"; // Mostrar mensaje de error
-    });
+// Función para iniciar la cámara
+function startCamera() {
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
+        .then(function(stream) {
+            video.srcObject = stream;
+            video.play();
+            isScanning = true; // Habilitar el escaneo
+            requestAnimationFrame(tick); // Reiniciar el bucle de escaneo
+        })
+        .catch(function(err) {
+            console.error("Error al acceder a la cámara:", err);
+            cameraError.style.display = "block"; // Mostrar mensaje de error
+        });
+}
+
+// Función para detener la cámara
+function stopCamera() {
+    if (video.srcObject) {
+        const stream = video.srcObject;
+        const tracks = stream.getTracks();
+        tracks.forEach(track => track.stop()); // Detener todas las pistas de la cámara
+        video.srcObject = null; // Limpiar el objeto de la cámara
+    }
+}
 
 // Función para escanear el QR
 function tick() {
@@ -145,76 +158,13 @@ function actualizarEstadoMesa(numeroMesa, invitado, ocupada) {
     });
 }
 
-// Función para mostrar/ocultar el estado de las mesas
-btnMostrarMesas.addEventListener("click", () => {
-    if (mesasContainer.style.display === "none") {
-        mesasContainer.style.display = "block"; // Mostrar la lista
-        mostrarEstadoMesas(); // Actualizar la lista
-    } else {
-        mesasContainer.style.display = "none"; // Ocultar la lista
-    }
-});
-
-// Botón para detener la cámara
-btnDetenerCamara.addEventListener("click", () => {
-    stopCamera();
-    btnDetenerCamara.disabled = true; // Deshabilitar el botón después de detener la cámara
-});
-
 // Botón para reiniciar el escaneo
 btnReiniciar.addEventListener("click", () => {
-    isScanning = true; // Reiniciar el escaneo
+    stopCamera(); // Detener la cámara
+    startCamera(); // Reiniciar la cámara
     result.innerText = ""; // Limpiar el resultado anterior
     videoContainer.classList.remove("detected"); // Restablecer el borde
 });
 
-// Función para detener la cámara
-function stopCamera() {
-    const stream = video.srcObject;
-    const tracks = stream.getTracks();
-    tracks.forEach(track => track.stop());
-    video.srcObject = null;
-}
-
-// Función para mostrar el estado de las mesas
-function mostrarEstadoMesas() {
-    const mesasRef = ref(database, "mesas");
-    onValue(mesasRef, (snapshot) => {
-        const mesas = snapshot.val();
-        const tbody = mesasList.querySelector("tbody");
-        tbody.innerHTML = ""; // Limpiar la tabla antes de agregar los nuevos datos
-
-        if (mesas) {
-            const mesasArray = Object.keys(mesas).map((mesa) => ({
-                numeroMesa: mesa,
-                invitados: mesas[mesa].invitados
-            }));
-
-            mesasArray.sort((a, b) => parseInt(a.numeroMesa, 10) - parseInt(b.numeroMesa, 10));
-
-            mesasArray.forEach((mesa) => {
-                if (mesa.invitados && mesa.invitados.length > 0) {
-                    mesa.invitados.forEach((invitado) => {
-                        const estado = invitado.ocupada ? "Ocupada" : "Disponible";
-                        const color = invitado.ocupada ? "red" : "green";
-
-                        const row = document.createElement("tr");
-                        row.innerHTML = `
-                            <td style="border: 1px solid #ccc; padding: 10px;">${mesa.numeroMesa}</td>
-                            <td style="border: 1px solid #ccc; padding: 10px;">${invitado.nombre}</td>
-                            <td style="border: 1px solid #ccc; padding: 10px; background-color: ${color}; color: white;">${estado}</td>
-                        `;
-                        tbody.appendChild(row);
-                    });
-                }
-            });
-        } else {
-            tbody.innerHTML = `<tr><td colspan="3" style="text-align: center;">No hay mesas generadas.</td></tr>`;
-        }
-    });
-}
-
-// Detener la cámara cuando se cierre la página
-window.addEventListener("beforeunload", () => {
-    stopCamera();
-});
+// Iniciar la cámara al cargar la página
+startCamera();
