@@ -24,28 +24,26 @@ h1, h2, h3 {
     box-sizing: border-box;
 }
 
-/* Estilos para los contenedores de los formularios */
-.formulario-container {
+/* Estilos para el contenedor de formularios */
+.formularios-container {
+    display: flex;
+    gap: 20px; /* Espacio entre los formularios */
+    margin-bottom: 20px;
+}
+
+/* Estilos para cada formulario */
+.formulario {
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 40px; /* Margen inferior para separar los formularios */
-    width: 100%;
-    max-width: 600px; /* Ancho máximo para los formularios */
-    margin: 0 auto; /* Centrar horizontalmente */
-}
-
-/* Eliminar el margen inferior del último formulario para evitar espacio extra */
-.formulario-container:last-child {
-    margin-bottom: 20px; /* Margen inferior normal para el último formulario */
+    flex: 1; /* Ambos formularios ocupan el mismo espacio */
 }
 
 /* Estilos para los títulos de los formularios */
-.formulario-container h2 {
+.formulario h2 {
     margin-top: 0;
     color: #555;
-    text-align: center; /* Centrar el título del formulario */
 }
 
 /* Estilos para los inputs y botones */
@@ -80,7 +78,7 @@ button:hover {
     background-color: #218838;
 }
 
-/* Contenedor del input de archivo */
+/* Estilos para el botón personalizado de selección de archivo */
 .file-input-container {
     position: relative;
     margin-bottom: 15px;

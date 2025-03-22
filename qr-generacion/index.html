@@ -13,40 +13,49 @@
     <div class="container">
         <h1>Generar Códigos QR y enlace de Invitación</h1>
 
-        <!-- Formulario para generar invitación individual -->
-        <div class="formulario-container">
-            <h2>Generar Invitación Individual</h2>
-            <form id="qr-form">
-                <label for="fecha-fiesta">Fecha de la fiesta:</label>
-                <input type="date" id="fecha-fiesta" required />
-                <label for="hora-fiesta">Hora de inicio:</label>
-                <input type="time" id="hora-fiesta" required />
-                <label for="numero-mesa">Número de Mesa:</label>
-                <select id="numero-mesa" required>
-                    <option value="">Selecciona una mesa</option>
-                </select>
-                <label for="invitado">Invitado:</label>
-                <input type="text" id="invitado" placeholder="Nombre del invitado" required />
-                <button type="submit">Cargar</button>
-            </form>
-        </div>
+        <!-- Contenedor para ambos formularios -->
+        <div class="formularios-container">
+            <!-- Formulario para generar invitación individual -->
+            <div class="formulario">
+                <h2>Generar Invitación Individual</h2>
+                <form id="qr-form">
+                    <label for="numero-mesa">Número de Mesa:</label>
+                    <select id="numero-mesa" required>
+                        <option value="">Selecciona una mesa</option>
+                    </select>
 
-        <!-- Formulario para importar Excel y generar múltiples invitaciones -->
-        <div class="formulario-container">
-            <h2>Generar Múltiples Invitaciones</h2>
-            <form id="form-importar-excel">
-                <label for="archivo-excel">Selecciona lista de invitados:</label>
-                <!-- Nuevo contenedor para el input de archivo personalizado -->
-                <div class="file-input-container">
-                    <label for="archivo-excel" class="custom-file-button">Seleccionar archivo</label>
-                    <input type="file" id="archivo-excel" accept=".xlsx, .csv" required />
-                </div>
-                <label for="fecha-fiesta-importar">Fecha de la fiesta:</label>
-                <input type="date" id="fecha-fiesta-importar" required />
-                <label for="hora-fiesta-importar">Hora de inicio:</label>
-                <input type="time" id="hora-fiesta-importar" required />
-                <button type="submit">Cargar</button>
-            </form>
+                    <label for="invitado">Invitado:</label>
+                    <input type="text" id="invitado" placeholder="Nombre del invitado" required />
+
+                    <label for="fecha-fiesta">Fecha de la fiesta:</label>
+                    <input type="date" id="fecha-fiesta" required />
+
+                    <label for="hora-fiesta">Hora de inicio:</label>
+                    <input type="time" id="hora-fiesta" required />
+
+                    <button type="submit">Cargar</button>
+                </form>
+            </div>
+
+            <!-- Formulario para importar Excel y generar múltiples invitaciones -->
+            <div class="formulario">
+                <h2>Generar Múltiples Invitaciones</h2>
+                <form id="form-importar-excel">
+                    <label for="archivo-excel">Selecciona lista de Invitados:</label>
+                    <div class="file-input-container">
+                        <label for="archivo-excel" class="custom-file-button">Seleccionar archivo</label>
+                        <input type="file" id="archivo-excel" accept=".xlsx, .csv" required />
+                    </div>
+
+                    <label for="fecha-fiesta-importar">Fecha de la fiesta:</label>
+                    <input type="date" id="fecha-fiesta-importar" required />
+
+                    <label for="hora-fiesta-importar">Hora de inicio:</label>
+                    <input type="time" id="hora-fiesta-importar" required />
+
+                    <button type="submit">Cargar</button>
+                </form>
+            </div>
         </div>
 
         <!-- Contenedor para la invitación generada -->
