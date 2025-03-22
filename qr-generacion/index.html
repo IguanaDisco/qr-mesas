@@ -35,13 +35,6 @@
         <button type="submit">Generar Invitación</button>
     </form>
 
-    <!-- Formulario para importar el archivo Excel -->
-<div id="importar-excel">
-    <h2>Importar desde Excel</h2>
-    <input type="file" id="archivo-excel" accept=".xlsx, .csv" />
-    <button id="asignar-fecha-hora">Asignar Fecha y Hora</button>
-</div>
-
     <div id="invitacion-container" style="display: none;">
         <h3>Invitación generada:</h3>
         <div id="qr-code" class="hidden"></div>
@@ -64,6 +57,13 @@
             </tbody>
         </table>
     </div>
+
+        <!-- Formulario para importar el archivo Excel -->
+<div id="importar-excel">
+    <h2>Importar desde Excel</h2>
+    <input type="file" id="archivo-excel" accept=".xlsx, .csv" />
+    <button id="asignar-fecha-hora">Asignar Fecha y Hora</button>
+</div>
 
     <script>
         // Generar dinámicamente las 20 opciones de mesas
