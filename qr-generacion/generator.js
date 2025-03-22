@@ -132,37 +132,6 @@ async function generarQR(numeroMesa, invitado, fechaFiesta, horaFiesta) {
     }
 }
 
-// Función para generar un código QR y subirlo a ImgBB
-async function generarYSubirQR(numeroMesa, invitado, fechaFiesta, horaFiesta) {
-    return new Promise((resolve, reject) => {
-        const data = JSON.stringify({ numeroMesa, invitado, fechaFiesta, horaFiesta });
-
-        QRCode.toCanvas(data, { width: 200 }, async (err, canvas) => {
-            if (err) {
-                reject(err);
-                return;
-            }
-
-            // Convertir el canvas a un blob
-            canvas.toBlob(async (blob) => {
-                if (!blob) {
-                    reject(new Error("No se pudo convertir el canvas a blob."));
-                    return;
-                }
-
-                // Subir la imagen a ImgBB
-                const qrImageUrl = await subirImagenABb(blob);
-                if (!qrImageUrl) {
-                    reject(new Error("No se pudo subir la imagen a ImgBB."));
-                    return;
-                }
-
-                resolve(qrImageUrl);
-            }, "image/png");
-        });
-    });
-}
-
 // Función para guardar la mesa, el invitado y la URL del QR en Firebase
 function guardarMesa(numeroMesa, invitado, qrImageUrl, fechaFiesta, horaFiesta) {
     const mesaRef = ref(database, `mesas/${numeroMesa}/invitados`);
@@ -271,217 +240,19 @@ document.getElementById('form-importar-excel').addEventListener('submit', async 
     }
 });
 
-let invitadoActual = null; // Almacena el nombre del invitado actualmente visible
-let botonActivo = null; // Almacena el botón que está actualmente activo
-
-// Función para mostrar el código QR
-function mostrarQR(qrImageUrl, botonMostrar, datosMesa) {
-    const qrContainer = document.getElementById("qr-code");
-    const invitacionContainer = document.getElementById("invitacion-container");
-    const invitacionTexto = document.getElementById("invitacion-texto");
-    const enviarWhatsApp = document.getElementById("enviar-whatsapp");
-
-    // Si se hace clic en el botón del invitado actual, ocultar el código QR y la invitación
-    if (invitadoActual === datosMesa.invitado) {
-        qrContainer.innerHTML = ""; // Limpiar el contenido
-        qrContainer.classList.add("hidden"); // Ocultar el código QR
-        invitacionContainer.style.display = "none"; // Ocultar la invitación
-
-        // Cambiar el texto del botón a "MOSTRAR"
-        botonMostrar.textContent = "MOSTRAR";
-
-        // Limpiar el invitado actualmente visible y el botón activo
-        invitadoActual = null;
-        botonActivo = null;
-        return; // Salir de la función
-    }
-
-    // Ocultar la información del invitado anterior (si hay uno)
-    if (invitadoActual !== null) {
-        qrContainer.innerHTML = ""; // Limpiar el contenido
-        qrContainer.classList.add("hidden"); // Ocultar el código QR
-        invitacionContainer.style.display = "none"; // Ocultar la invitación
-
-        // Cambiar el texto del botón activo a "MOSTRAR"
-        if (botonActivo) {
-            botonActivo.textContent = "MOSTRAR";
-        }
-    }
-
-    // Ocultar el código QR generado previamente
-    qrContainer.innerHTML = "";
-
-    // Mostrar la invitación existente
-    invitacionTexto.innerHTML = `
-        <p>
-            Quiero invitarte a mi fiesta 🎉<br>
-            Fecha: ${datosMesa.fechaFiesta}<br>
-            Hora: ${datosMesa.horaFiesta}<br>
-            Debe presentar este código QR en portería.<br>
-            Mesa: ${datosMesa.numeroMesa}<br>
-            Invitado: ${datosMesa.invitado}
-        </p>
-        <img src="${qrImageUrl}" alt="Código QR" style="max-width: 200px;">
-    `;
-    invitacionContainer.style.display = "block";
-
-    // Actualizar el enlace de WhatsApp
-    const mensajeWhatsApp = encodeURIComponent(`
-        Quiero invitarte a mi fiesta 🎉
-        Fecha: ${datosMesa.fechaFiesta}
-        Hora: ${datosMesa.horaFiesta}
-        Debe presentar este código QR en portería.
-
-        Mesa: ${datosMesa.numeroMesa}
-        Invitado: ${datosMesa.invitado}
-
-        Ver el código QR: ${qrImageUrl}
-    `);
-    enviarWhatsApp.href = `https://wa.me/?text=${mensajeWhatsApp}`;
-
-    // Cambiar el texto del botón a "OCULTAR"
-    botonMostrar.textContent = "OCULTAR";
-
-    // Actualizar el invitado actualmente visible y el botón activo
-    invitadoActual = datosMesa.invitado;
-    botonActivo = botonMostrar;
-}
-
-function mostrarMesas(mesas) {
-    const tbody = document.querySelector("#mesas-table tbody");
-    tbody.innerHTML = ""; // Limpiar la tabla antes de actualizarla
-
-    // Convertir las claves de las mesas a números y ordenarlas
-    const mesasOrdenadas = Object.entries(mesas)
-        .map(([numeroMesa, datos]) => ({ numeroMesa: Number(numeroMesa), datos }))
-        .sort((a, b) => a.numeroMesa - b.numeroMesa);
-
-    for (const { numeroMesa, datos } of mesasOrdenadas) {
-        if (datos.invitados && datos.invitados.length > 0) {
-            datos.invitados.forEach((invitado) => {
-                const fila = document.createElement("tr");
-
-                // Celda para el número de mesa
-                const celdaNumeroMesa = document.createElement("td");
-                celdaNumeroMesa.textContent = numeroMesa;
-                fila.appendChild(celdaNumeroMesa);
-
-                // Celda para el invitado
-                const celdaInvitado = document.createElement("td");
-                celdaInvitado.textContent = invitado.nombre;
-                fila.appendChild(celdaInvitado);
-
-                // Celda para el estado de escaneado
-                const celdaEscaneado = document.createElement("td");
-                celdaEscaneado.textContent = invitado.Escaneado ? "Escaneado ✅" : "No escaneado ❌";
-                fila.appendChild(celdaEscaneado);
-
-                // Celda para las acciones (MOSTRAR y ELIMINAR)
-                const celdaAcciones = document.createElement("td");
-
-                // Botón MOSTRAR
-                const botonMostrar = document.createElement("button");
-                botonMostrar.textContent = "MOSTRAR";
-                botonMostrar.classList.add("boton-mostrar");
-                botonMostrar.addEventListener("click", () => {
-                    mostrarQR(invitado.qrImageUrl, botonMostrar, {
-                        numeroMesa: numeroMesa,
-                        invitado: invitado.nombre,
-                        fechaFiesta: invitado.fechaFiesta,
-                        horaFiesta: invitado.horaFiesta
-                    });
-                });
-                celdaAcciones.appendChild(botonMostrar);
-
-                // Botón ELIMINAR
-                const botonEliminar = document.createElement("button");
-                botonEliminar.textContent = "Eliminar";
-                botonEliminar.classList.add("boton-eliminar");
-                botonEliminar.addEventListener("click", () => eliminarInvitado(numeroMesa, invitado.nombre));
-                celdaAcciones.appendChild(botonEliminar);
-
-                // Agregar la celda de acciones a la fila
-                fila.appendChild(celdaAcciones);
-
-                // Agregar la fila a la tabla
-                tbody.appendChild(fila);
-            });
-        }
-    }
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-    const mesasRef = ref(database, "mesas");
-    onValue(mesasRef, (snapshot) => {
-        const mesas = snapshot.val();
-        console.log("Datos de Firebase:", mesas); // Verifica los datos recuperados
-        if (mesas) {
-            mostrarMesas(mesas);
-        } else {
-            document.querySelector("#mesas-table tbody").innerHTML = "<tr><td colspan='3'>No hay mesas generadas.</td></tr>";
-        }
-    });
-});
-
-// Función para eliminar una mesa de Firebase
-function eliminarMesa(numeroMesa) {
-    const mesaRef = ref(database, `mesas/${numeroMesa}`);
-    remove(mesaRef)
-        .then(() => {
-            console.log(`Mesa ${numeroMesa} eliminada de Firebase.`);
-        })
-        .catch((error) => {
-            console.error("Error al eliminar la mesa:", error);
-            alert("Hubo un error al eliminar la mesa. Inténtalo de nuevo.");
-        });
-}
-
-function eliminarInvitado(numeroMesa, nombreInvitado) {
-    if (confirm(`¿Estás seguro de que quieres eliminar a ${nombreInvitado} de la mesa ${numeroMesa}?`)) {
-        const mesaRef = ref(database, `mesas/${numeroMesa}/invitados`);
-        get(mesaRef).then((snapshot) => {
-            if (snapshot.exists()) {
-                let invitados = snapshot.val();
-                // Filtrar el invitado que se desea eliminar
-                invitados = invitados.filter((invitado) => invitado.nombre !== nombreInvitado);
-                // Guardar la lista actualizada en Firebase
-                set(mesaRef, invitados)
-                    .then(() => {
-                        console.log(`Invitado ${nombreInvitado} eliminado de la mesa ${numeroMesa}.`);
-                        alert(`Invitado ${nombreInvitado} eliminado correctamente.`);
-                    })
-                    .catch((error) => {
-                        console.error("Error al eliminar el invitado:", error);
-                        alert("Hubo un error al eliminar el invitado. Inténtalo de nuevo.");
-                    });
-            }
-        }).catch((error) => {
-            console.error("Error al obtener los datos de Firebase:", error);
-            alert("Hubo un error al obtener los datos de Firebase. Inténtalo de nuevo.");
-        });
-    }
-}
-
-// Escuchar cambios en la lista de mesas
-const mesasRef = ref(database, "mesas");
-onValue(mesasRef, (snapshot) => {
-    const mesas = snapshot.val();
-    if (mesas) {
-        mostrarMesas(mesas);
-    } else {
-        document.querySelector("#mesas-table tbody").innerHTML = "<tr><td colspan='3'>No hay mesas generadas.</td></tr>";
-    }
-});
-
-// Manejar el envío del formulario
+// Manejar el envío del formulario qr-form
 qrForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Evitar que el formulario se envíe
+
+    // Obtener los valores del formulario
     const numeroMesa = numeroMesaInput.value.trim();
     const invitado = invitadoInput.value.trim();
     const fechaFiesta = fechaFiestaInput.value;
     const horaFiesta = horaFiestaInput.value;
 
+    // Validar que todos los campos estén completos
     if (numeroMesa && invitado && fechaFiesta && horaFiesta) {
+        // Generar el código QR y guardar los datos en Firebase
         await generarQR(numeroMesa, invitado, fechaFiesta, horaFiesta);
     } else {
         alert("Por favor, completa todos los campos.");
