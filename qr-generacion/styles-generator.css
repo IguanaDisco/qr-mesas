@@ -24,21 +24,21 @@ h1, h2, h3 {
     box-sizing: border-box;
 }
 
-/* Contenedor de formularios */
+/* Estilos para los contenedores de los formularios */
 .formulario-container {
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px; /* Espacio entre los formularios */
+    margin-bottom: 40px; /* Margen inferior para separar los formularios */
     width: 100%;
     max-width: 600px; /* Ancho máximo para los formularios */
     margin: 0 auto; /* Centrar horizontalmente */
 }
 
-/* Añadir margen inferior al primer formulario */
-#qr-form {
-    margin-bottom: 20px; /* Aumenta este valor para separar más los formularios */
+/* Eliminar el margen inferior del último formulario para evitar espacio extra */
+.formulario-container:last-child {
+    margin-bottom: 20px; /* Margen inferior normal para el último formulario */
 }
 
 /* Estilos para los títulos de los formularios */
