@@ -165,6 +165,80 @@ function guardarMesa(numeroMesa, invitado, qrImageUrl, fechaFiesta, horaFiesta) 
     });
 }
 
+// Función para leer el archivo Excel
+function leerArchivoExcel(archivo) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data, { type: 'array' });
+            const primeraHoja = workbook.Sheets[workbook.SheetNames[0]];
+            const jsonData = XLSX.utils.sheet_to_json(primeraHoja, { header: 1 });
+            resolve(jsonData);
+        };
+        reader.onerror = (error) => reject(error);
+        reader.readAsArrayBuffer(archivo);
+    });
+}
+
+// Función para procesar los datos del archivo Excel
+function procesarDatosExcel(datosExcel) {
+    const datosProcesados = [];
+    for (let i = 1; i < datosExcel.length; i++) { // Ignorar la primera fila (encabezados)
+        const [numeroMesa, invitado] = datosExcel[i];
+        if (numeroMesa && invitado) {
+            datosProcesados.push({ numeroMesa, invitado });
+        }
+    }
+    return datosProcesados;
+}
+
+// Función para cargar los datos en Firebase
+async function cargarDatosEnFirebase(datos, fechaFiesta, horaFiesta) {
+    for (const { numeroMesa, invitado } of datos) {
+        await guardarMesa(numeroMesa, invitado, null, fechaFiesta, horaFiesta);
+    }
+    alert("Datos cargados correctamente en Firebase.");
+}
+
+// Evento para subir el archivo Excel
+document.getElementById('archivo-excel').addEventListener('change', async (e) => {
+    const archivo = e.target.files[0];
+    if (!archivo) return;
+
+    try {
+        const datosExcel = await leerArchivoExcel(archivo);
+        const datosProcesados = procesarDatosExcel(datosExcel);
+        console.log("Datos procesados:", datosProcesados);
+
+        // Guardar los datos procesados en una variable global
+        window.datosImportados = datosProcesados;
+        alert("Archivo procesado correctamente. Ahora asigna la fecha y hora de la fiesta.");
+    } catch (error) {
+        console.error("Error al leer el archivo Excel:", error);
+        alert("Hubo un error al procesar el archivo. Inténtalo de nuevo.");
+    }
+});
+
+// Evento para asignar fecha y hora
+document.getElementById('asignar-fecha-hora').addEventListener('click', () => {
+    const fechaFiesta = document.getElementById('fecha-fiesta').value;
+    const horaFiesta = document.getElementById('hora-fiesta').value;
+
+    if (!fechaFiesta || !horaFiesta) {
+        alert("Por favor, selecciona una fecha y hora de la fiesta.");
+        return;
+    }
+
+    if (!window.datosImportados || window.datosImportados.length === 0) {
+        alert("No hay datos importados para cargar.");
+        return;
+    }
+
+    // Cargar los datos en Firebase
+    cargarDatosEnFirebase(window.datosImportados, fechaFiesta, horaFiesta);
+});
+
 let invitadoActual = null; // Almacena el nombre del invitado actualmente visible
 let botonActivo = null; // Almacena el botón que está actualmente activo
 
