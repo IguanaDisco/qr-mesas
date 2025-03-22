@@ -52,6 +52,8 @@ navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
     });
 
 // Función para escanear el QR
+let animationFrameId = null; // Variable para almacenar el ID de la animación
+
 function tick() {
     if (!isScanning) {
         scanningIndicator.style.display = "none"; // Ocultar indicador si no se está escaneando
@@ -78,8 +80,18 @@ function tick() {
             videoContainer.classList.remove("detected");
         }
     }
-    requestAnimationFrame(tick);
+    animationFrameId = requestAnimationFrame(tick); // Almacenar el ID de la animación
 }
+
+// Función para detener el bucle de escaneo
+function stopScanning() {
+    if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId); // Detener el bucle de escaneo
+        animationFrameId = null;
+    }
+    isScanning = false; // Restablecer el estado de escaneo
+}
+
 
 // Función para verificar si la mesa existe en la base de datos
 function verificarExistenciaMesa(data) {
@@ -216,7 +228,7 @@ function startCamera() {
             video.srcObject = stream;
             video.play();
             isScanning = true; // Habilitar el escaneo
-            requestAnimationFrame(tick); // Reiniciar el bucle de escaneo
+            tick(); // Iniciar el bucle de escaneo
         })
         .catch(function(err) {
             console.error("Error al acceder a la cámara:", err);
@@ -279,7 +291,8 @@ btnDetenerCamara.disabled = false; // Habilitar el botón "Detener Cámara"
 scanningIndicator.innerText = "Escaneando..."; // Mostrar el texto inicial
 scanningIndicator.style.backgroundColor = "rgba(0, 0, 0, 0.5)"; // Color de fondo inicial
 
-// Detener la cámara cuando se cierre la página
+// Detener el bucle de escaneo al recargar la página
 window.addEventListener("beforeunload", () => {
-    stopCamera();
+    stopScanning(); // Detener el bucle de escaneo
+    stopCamera(); // Detener la cámara
 });
