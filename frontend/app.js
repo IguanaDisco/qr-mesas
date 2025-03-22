@@ -159,6 +159,8 @@ btnMostrarMesas.addEventListener("click", () => {
 btnDetenerCamara.addEventListener("click", () => {
     stopCamera(); // Detener la cámara
     btnDetenerCamara.disabled = true; // Deshabilitar el botón "Detener Cámara"
+    scanningIndicator.innerText = "Cámara apagada, reinicia el escaneo"; // Cambiar el texto del indicador
+    scanningIndicator.style.backgroundColor = "rgba(255, 0, 0, 0.5)"; // Cambiar el color de fondo a rojo
 });
 
 // Botón para reiniciar el escaneo
@@ -168,6 +170,8 @@ btnReiniciar.addEventListener("click", () => {
     btnDetenerCamara.disabled = false; // Habilitar el botón "Detener Cámara"
     result.innerText = ""; // Limpiar el resultado anterior
     videoContainer.classList.remove("detected"); // Restablecer el borde
+    scanningIndicator.innerText = "Escaneando..."; // Restaurar el texto del indicador
+    scanningIndicator.style.backgroundColor = "rgba(0, 0, 0, 0.5)"; // Restaurar el color de fondo
 });
 
 // Función para detener la cámara
@@ -246,6 +250,8 @@ function mostrarEstadoMesas() {
 // Iniciar la cámara al cargar la página
 startCamera();
 btnDetenerCamara.disabled = false; // Habilitar el botón "Detener Cámara"
+scanningIndicator.innerText = "Escaneando..."; // Mostrar el texto inicial
+scanningIndicator.style.backgroundColor = "rgba(0, 0, 0, 0.5)"; // Color de fondo inicial
 
 // Detener la cámara cuando se cierre la página
 window.addEventListener("beforeunload", () => {
