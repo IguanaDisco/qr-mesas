@@ -174,6 +174,9 @@ btnDetenerCamara.addEventListener("click", () => {
     // Ocultar la imagen del código QR
     const qrImage = document.getElementById("qr-image");
     qrImage.style.display = "none";
+
+    // Limpiar el texto "Mesa escaneada:" e "Invitado:"
+    result.innerText = "";
 });
 
 // Botón para reiniciar el escaneo
