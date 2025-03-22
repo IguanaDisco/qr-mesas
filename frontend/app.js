@@ -157,14 +157,15 @@ btnMostrarMesas.addEventListener("click", () => {
 
 // Botón para detener la cámara
 btnDetenerCamara.addEventListener("click", () => {
-    stopCamera();
-    btnDetenerCamara.disabled = true; // Deshabilitar el botón después de detener la cámara
+    stopCamera(); // Detener la cámara
+    btnDetenerCamara.disabled = true; // Deshabilitar el botón "Detener Cámara"
 });
 
 // Botón para reiniciar el escaneo
 btnReiniciar.addEventListener("click", () => {
     stopCamera(); // Detener la cámara
     startCamera(); // Reiniciar la cámara
+    btnDetenerCamara.disabled = false; // Habilitar el botón "Detener Cámara"
     result.innerText = ""; // Limpiar el resultado anterior
     videoContainer.classList.remove("detected"); // Restablecer el borde
 });
@@ -244,6 +245,7 @@ function mostrarEstadoMesas() {
 
 // Iniciar la cámara al cargar la página
 startCamera();
+btnDetenerCamara.disabled = false; // Habilitar el botón "Detener Cámara"
 
 // Detener la cámara cuando se cierre la página
 window.addEventListener("beforeunload", () => {
