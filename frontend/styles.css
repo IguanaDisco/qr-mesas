@@ -37,6 +37,17 @@ h1 {
     display: none; /* Oculto por defecto */
 }
 
+#qr-image-container {
+    text-align: center; /* Centrar horizontalmente */
+    margin-top: 10px; /* Espacio superior */
+}
+
+#qr-image {
+    max-width: 100%; /* Ajustar el ancho de la imagen */
+    height: auto; /* Mantener la proporción */
+    display: none; /* Ocultar por defecto */
+}
+
 /* Estilo cuando se detecta un código QR */
 #video-container.detected {
     border-color: green; /* Borde verde cuando se detecta un código QR */
@@ -141,3 +152,4 @@ h1 {
 .mesa-disponible {
     background-color: #4CAF50;
 }
+
