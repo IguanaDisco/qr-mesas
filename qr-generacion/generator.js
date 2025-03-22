@@ -139,7 +139,8 @@ function guardarMesa(numeroMesa, invitado, qrImageUrl, fechaFiesta, horaFiesta) 
         nombre: invitado,
         qrImageUrl,
         fechaFiesta,
-        horaFiesta
+        horaFiesta,
+        Escaneado: false // Agregar el campo "Escaneado"
     };
 
     // Obtener la lista actual de invitados
@@ -187,7 +188,11 @@ function procesarDatosExcel(datosExcel) {
     for (let i = 1; i < datosExcel.length; i++) { // Ignorar la primera fila (encabezados)
         const [numeroMesa, invitado] = datosExcel[i];
         if (numeroMesa && invitado) {
-            datosProcesados.push({ numeroMesa, invitado });
+            datosProcesados.push({
+                numeroMesa,
+                invitado,
+                Escaneado: false // Agregar el campo "Escaneado"
+            });
         }
     }
     return datosProcesados;
@@ -325,6 +330,11 @@ function mostrarMesas(mesas) {
                 const celdaInvitado = document.createElement("td");
                 celdaInvitado.textContent = invitado.nombre;
                 fila.appendChild(celdaInvitado);
+
+                // Celda para el estado de escaneado
+                const celdaEscaneado = document.createElement("td");
+                celdaEscaneado.textContent = invitado.Escaneado ? "Escaneado ✅" : "No escaneado ❌";
+                fila.appendChild(celdaEscaneado);
 
                 // Celda para las acciones (MOSTRAR y ELIMINAR)
                 const celdaAcciones = document.createElement("td");
