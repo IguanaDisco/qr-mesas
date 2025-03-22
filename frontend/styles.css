@@ -47,6 +47,7 @@ h1 {
     max-width: 300px; /* Ancho máximo de la imagen */
     height: auto; /* Mantener la proporción */
     display: none; /* Ocultar por defecto */
+    margin: 0 auto; /* Centrar la imagen horizontalmente */
 }
 
 /* Estilo cuando se detecta un código QR */

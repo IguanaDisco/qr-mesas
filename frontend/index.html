@@ -8,6 +8,20 @@
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
     <script type="module" src="app.js"></script>
+    <style>
+        #qr-image-container {
+            width: 100%; /* Ocupar todo el ancho disponible */
+            text-align: center; /* Centrar horizontalmente */
+            margin-top: 10px; /* Espacio superior */
+        }
+
+        #qr-image {
+            max-width: 300px; /* Ancho máximo de la imagen */
+            height: auto; /* Mantener la proporción */
+            display: none; /* Ocultar por defecto */
+            margin: 0 auto; /* Centrar la imagen horizontalmente */
+        }
+    </style>
 </head>
 <body>
     <h1>Escanear Código QR</h1>
@@ -24,9 +38,9 @@
     <p id="result"></p>
 
     <p id="result"></p>
-<div id="qr-image-container" style="width: 100%; text-align: center; margin-top: 10px;">
-    <img id="qr-image" src="" alt="Código QR escaneado" style="display: none; max-width: 100%; height: auto;">
-</div>
+    <div id="qr-image-container" style="width: 100%; text-align: center; margin-top: 10px;">
+        <img id="qr-image" src="" alt="Código QR escaneado" style="display: none; max-width: 100%; height: auto;">
+    </div>
 
     <button id="btn-mostrar-mesas">Mostrar Estado de las Mesas</button>
 
