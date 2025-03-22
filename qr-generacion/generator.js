@@ -371,19 +371,6 @@ function mostrarMesas(mesas) {
                 celdaInvitado.textContent = invitado.nombre;
                 fila.appendChild(celdaInvitado);
 
-                // Celda para el código QR
-                const celdaQR = document.createElement("td");
-                if (invitado.qrImageUrl) {
-                    const imgQR = document.createElement("img");
-                    imgQR.src = invitado.qrImageUrl;
-                    imgQR.alt = "Código QR";
-                    imgQR.style.maxWidth = "100px";
-                    celdaQR.appendChild(imgQR);
-                } else {
-                    celdaQR.textContent = "Código QR no disponible";
-                }
-                fila.appendChild(celdaQR);
-
                 // Celda para el estado de escaneado
                 const celdaEscaneado = document.createElement("td");
                 celdaEscaneado.textContent = invitado.Escaneado ? "Escaneado ✅" : "No escaneado ❌";
