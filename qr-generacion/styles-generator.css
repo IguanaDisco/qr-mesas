@@ -30,7 +30,7 @@ h1, h2, h3 {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 40px; /* Margen inferior para separar los formularios */
+    margin-bottom: 20px; /* Margen inferior para separar los formularios */
     width: 100%;
     max-width: 600px; /* Ancho máximo para los formularios */
     margin: 0 auto; /* Centrar horizontalmente */
