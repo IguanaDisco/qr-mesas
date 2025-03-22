@@ -351,6 +351,20 @@ function mostrarMesas(mesas) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+    const fileInput = document.getElementById('archivo-excel');
+    const fileNameSpan = document.getElementById('file-name');
+
+    fileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0]; // Obtener el archivo seleccionado
+        if (file) {
+            fileNameSpan.textContent = file.name; // Mostrar el nombre del archivo
+        } else {
+            fileNameSpan.textContent = ''; // Limpiar el nombre si no hay archivo
+        }
+    });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
     const mesasRef = ref(database, "mesas");
     onValue(mesasRef, (snapshot) => {
         const mesas = snapshot.val();
