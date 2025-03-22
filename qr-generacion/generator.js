@@ -123,13 +123,6 @@ async function generarQR(numeroMesa, invitado, fechaFiesta, horaFiesta) {
                         Ver el código QR: ${qrImageUrl}
                     `);
                     enviarWhatsApp.href = `https://wa.me/?text=${mensajeWhatsApp}`;
-
-                    // Limpiar el estado del botón MOSTRAR si está activo
-                    if (botonActivo) {
-                        botonActivo.textContent = "MOSTRAR";
-                        botonActivo = null;
-                    }
-                    invitadoActual = null; // Limpiar el invitado actual
                 }, "image/png");
             }
         });
