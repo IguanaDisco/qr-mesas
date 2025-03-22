@@ -36,7 +36,11 @@
             <h2>Generar Múltiples Invitaciones</h2>
             <form id="form-importar-excel">
                 <label for="archivo-excel">Selecciona un archivo Excel:</label>
-                <input type="file" id="archivo-excel" accept=".xlsx, .csv" required />
+                <!-- Nuevo contenedor para el input de archivo personalizado -->
+                <div class="file-input-container">
+                    <label for="archivo-excel" class="custom-file-button">Seleccionar archivo</label>
+                    <input type="file" id="archivo-excel" accept=".xlsx, .csv" required />
+                </div>
                 <label for="fecha-fiesta-importar">Fecha de la fiesta:</label>
                 <input type="date" id="fecha-fiesta-importar" required />
                 <label for="hora-fiesta-importar">Hora de inicio:</label>

@@ -30,7 +30,7 @@ h1, h2, h3 {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px; /* Margen inferior para separar los formularios */
+    margin-bottom: 40px; /* Margen inferior para separar los formularios */
     width: 100%;
     max-width: 600px; /* Ancho máximo para los formularios */
     margin: 0 auto; /* Centrar horizontalmente */
@@ -78,6 +78,40 @@ button {
 
 button:hover {
     background-color: #218838;
+}
+
+/* Contenedor del input de archivo */
+.file-input-container {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+/* Ocultar el input de archivo nativo */
+.file-input-container input[type="file"] {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+/* Estilos para el botón personalizado */
+.custom-file-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ffc107; /* Color amarillo */
+    color: #000; /* Texto negro para mejor contraste */
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.custom-file-button:hover {
+    background-color: #e0a800; /* Color amarillo más oscuro al pasar el mouse */
 }
 
 /* Estilos para la tabla */
