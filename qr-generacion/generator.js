@@ -294,9 +294,10 @@ function mostrarMesas(mesas) {
     // Convertir las claves de las mesas a números y ordenarlas
     const mesasOrdenadas = Object.entries(mesas)
         .map(([numeroMesa, datos]) => ({ numeroMesa: Number(numeroMesa), datos }))
-        .sort((a, b) => a.numeroMesa - b.numeroMesa);
+        .sort((a, b) => a.numeroMesa - b.numeroMesa); // Ordenar por número de mesa
 
-    for (const { numeroMesa, datos } of mesasOrdenadas) {
+    // Recorrer las mesas ordenadas
+    mesasOrdenadas.forEach(({ numeroMesa, datos }) => {
         if (datos.invitados && datos.invitados.length > 0) {
             datos.invitados.forEach((invitado) => {
                 const fila = document.createElement("tr");
@@ -347,7 +348,57 @@ function mostrarMesas(mesas) {
                 tbody.appendChild(fila);
             });
         }
-    }
+    });
+}
+
+let paginaActual = 1;
+const registrosPorPagina = 50; // Mostrar 50 registros por página
+
+function mostrarMesas(mesas, pagina = 1) {
+    const tbody = document.querySelector("#mesas-table tbody");
+    tbody.innerHTML = "";
+
+    const mesasOrdenadas = Object.entries(mesas)
+        .map(([numeroMesa, datos]) => ({ numeroMesa: Number(numeroMesa), datos }))
+        .sort((a, b) => a.numeroMesa - b.numeroMesa);
+
+    const inicio = (pagina - 1) * registrosPorPagina;
+    const fin = inicio + registrosPorPagina;
+    const mesasPaginadas = mesasOrdenadas.slice(inicio, fin);
+
+    mesasPaginadas.forEach(({ numeroMesa, datos }) => {
+        if (datos.invitados && datos.invitados.length > 0) {
+            datos.invitados.forEach((invitado) => {
+                const fila = document.createElement("tr");
+                // Renderizar la fila (igual que antes)
+                tbody.appendChild(fila);
+            });
+        }
+    });
+
+    // Actualizar la paginación
+    actualizarPaginacion(mesasOrdenadas.length);
+}
+
+function actualizarPaginacion(totalRegistros) {
+    const totalPaginas = Math.ceil(totalRegistros / registrosPorPagina);
+    console.log(`Total de páginas: ${totalPaginas}`);
+    // Aquí puedes agregar botones de paginación (anterior, siguiente, etc.)
+}
+
+function filtrarInvitados(mesas, filtro) {
+    const mesasOrdenadas = Object.entries(mesas)
+        .map(([numeroMesa, datos]) => ({ numeroMesa: Number(numeroMesa), datos }))
+        .sort((a, b) => a.numeroMesa - b.numeroMesa);
+
+    const resultadosFiltrados = mesasOrdenadas.filter(({ numeroMesa, datos }) => {
+        return datos.invitados.some((invitado) =>
+            invitado.nombre.toLowerCase().includes(filtro.toLowerCase()) ||
+            numeroMesa.toString().includes(filtro)
+        );
+    });
+
+    mostrarMesas(resultadosFiltrados);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
