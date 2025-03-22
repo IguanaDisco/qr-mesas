@@ -1,0 +1,13 @@
+{
+  "name": "qr-generator",
+  "version": "1.0.0",
+  "description": "Generador de códigos QR para mesas",
+  "main": "qr-generator.js",
+  "scripts": {
+    "start": "node qr-generator.js"
+  },
+  "dependencies": {
+    "firebase": "^11.4.0",
+    "qrcode": "^1.5.1"
+  }
+}

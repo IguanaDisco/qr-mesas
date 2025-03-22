@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generar Códigos QR</title>
+    <link rel="stylesheet" href="styles-generator.css"> <!-- Enlace al archivo CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <script type="module" src="generator.js"></script>
+</head>
+<body>
+    <h1>Generar Códigos QR y enlace de Invitación para Mesas</h1>
+    <form id="qr-form">
+        <!-- Fecha de la fiesta -->
+        <label for="fecha-fiesta">Fecha de la fiesta:</label>
+        <input type="date" id="fecha-fiesta" required />
+
+        <!-- Hora de inicio -->
+        <label for="hora-fiesta">Hora de inicio:</label>
+        <input type="time" id="hora-fiesta" required />
+
+        <!-- Número de mesa -->
+        <label for="numero-mesa">Número de Mesa:</label>
+        <select id="numero-mesa" required>
+            <option value="">Selecciona una mesa</option>
+            <!-- Las opciones se generarán dinámicamente con JavaScript -->
+        </select>
+
+        <!-- Invitado -->
+        <label for="invitado">Invitado:</label>
+        <input type="text" id="invitado" placeholder="Nombre del invitado" required />
+
+        <!-- Botón para generar el código QR -->
+        <button type="submit">Generar Invitación</button>
+    </form>
+
+    <div id="invitacion-container" style="display: none;">
+        <h3>Invitación generada:</h3>
+        <div id="qr-code" class="hidden"></div>
+        <div id="invitacion-texto"></div>
+        <a id="enviar-whatsapp" target="_blank">Enviar por WhatsApp</a>
+    </div>
+
+    <div id="lista-mesas">
+        <h2>Lista de Invitados</h2>
+        <table id="mesas-table">
+            <thead>
+                <tr>
+                    <th>Número de Mesa</th>
+                    <th>Invitado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Las filas de la tabla se generarán dinámicamente -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Generar dinámicamente las 20 opciones de mesas
+        const selectMesa = document.getElementById('numero-mesa');
+        const totalMesas = 20; // Número total de mesas
+
+        for (let i = 1; i <= totalMesas; i++) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.textContent = `Mesa ${i}`;
+            selectMesa.appendChild(option);
+        }
+
+        // Seleccionar los elementos del formulario
+        const fechaFiesta = document.getElementById('fecha-fiesta');
+        const horaFiesta = document.getElementById('hora-fiesta');
+        const numeroMesa = document.getElementById('numero-mesa');
+        const invitado = document.getElementById('invitado'); // Cambiado de "invitados" a "invitado"
+
+        // Función para guardar los valores en localStorage
+        function guardarValores() {
+            localStorage.setItem('fechaFiesta', fechaFiesta.value);
+            localStorage.setItem('horaFiesta', horaFiesta.value);
+            localStorage.setItem('numeroMesa', numeroMesa.value);
+            localStorage.setItem('invitado', invitado.value); // Cambiado de "invitados" a "invitado"
+        }
+
+        // Función para cargar los valores desde localStorage
+        function cargarValores() {
+            const fechaGuardada = localStorage.getItem('fechaFiesta');
+            const horaGuardada = localStorage.getItem('horaFiesta');
+            const mesaGuardada = localStorage.getItem('numeroMesa');
+            const invitadoGuardado = localStorage.getItem('invitado'); // Cambiado de "invitados" a "invitado"
+
+            if (fechaGuardada) fechaFiesta.value = fechaGuardada;
+            if (horaGuardada) horaFiesta.value = horaGuardada;
+            if (mesaGuardada) numeroMesa.value = mesaGuardada;
+            if (invitadoGuardado) invitado.value = invitadoGuardado; // Cambiado de "invitados" a "invitado"
+        }
+
+        // Eventos para guardar los valores cuando cambian
+        fechaFiesta.addEventListener('change', guardarValores);
+        horaFiesta.addEventListener('change', guardarValores);
+        numeroMesa.addEventListener('change', guardarValores);
+        invitado.addEventListener('change', guardarValores); // Cambiado de "invitados" a "invitado"
+
+        // Cargar los valores cuando la página se carga
+        window.addEventListener('load', cargarValores);
+    </script>
+</body>
+</html>
