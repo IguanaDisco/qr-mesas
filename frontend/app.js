@@ -170,6 +170,10 @@ btnDetenerCamara.addEventListener("click", () => {
     btnDetenerCamara.disabled = true; // Deshabilitar el botón "Detener Cámara"
     scanningIndicator.innerText = "Cámara apagada, reinicia el escaneo"; // Cambiar el texto del indicador
     scanningIndicator.style.backgroundColor = "rgba(255, 0, 0, 0.5)"; // Cambiar el color de fondo a rojo
+
+    // Ocultar la imagen del código QR
+    const qrImage = document.getElementById("qr-image");
+    qrImage.style.display = "none";
 });
 
 // Botón para reiniciar el escaneo
