@@ -5,34 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Escanear Código QR</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
     <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
     <script type="module" src="app.js"></script>
 </head>
 <body>
     <h1>Escanear Código QR</h1>
-    <div id="video-container"> <!-- Contenedor de la cámara -->
+    <div id="video-container">
         <video id="video" width="300" height="200" autoplay></video>
+        <p id="scanning-indicator" style="color: white; background-color: rgba(0, 0, 0, 0.5); padding: 5px;">Escaneando...</p>
     </div>
     <canvas id="canvas" style="display:none;"></canvas>
     <p id="result"></p>
 
     <!-- Popup para asignar mesa -->
-    <div id="popup" style="display: none;">
+    <div id="overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 999;"></div>
+    <div id="popup" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); z-index: 1000;">
         <h2 id="popup-title">Asignar Mesa:</h2>
         <p id="popup-mesa"></p>
         <button id="btn-si">Sí</button>
         <button id="btn-no">No</button>
     </div>
 
-    <!-- Botón para mostrar/ocultar el estado de las mesas -->
+    <!-- Botones adicionales -->
+    <button id="btn-detener-camara" style="margin-top: 10px;">Detener Cámara</button>
+    <button id="btn-reiniciar" style="margin-top: 10px;">Reiniciar Escaneo</button>
     <button id="btn-mostrar-mesas">Mostrar Estado de las Mesas</button>
 
     <!-- Sección para mostrar el estado de las mesas (oculta por defecto) -->
     <div id="mesas-container" style="display: none;">
         <h2>Estado de las Mesas</h2>
-        <div id="mesas-list">
-            <!-- Aquí se mostrarán las mesas -->
-        </div>
+        <table id="mesas-list" style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th style="border: 1px solid #ccc; padding: 10px;">Mesa</th>
+                    <th style="border: 1px solid #ccc; padding: 10px;">Invitado</th>
+                    <th style="border: 1px solid #ccc; padding: 10px;">Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Aquí se mostrarán las mesas -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Mensaje de error de la cámara -->
+    <div id="camera-error" style="display: none; color: red; font-weight: bold;">
+        No se pudo acceder a la cámara. Asegúrate de permitir el acceso a la cámara y recargar la página.
     </div>
 </body>
 </html>

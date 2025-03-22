@@ -19,22 +19,22 @@ h1 {
     color: white; /* Texto "Mesa escaneada:" en blanco */
 }
 
-video {
-    border: 2px solid #333;
-    border-radius: 5px;
-    width: 90%; /* Ocupa el 90% del ancho disponible */
-    max-width: 600px; /* Limita el ancho máximo para que no sea demasiado grande */
-    height: auto; /* Mantiene la proporción de aspecto */
-    margin: 20px auto; /* Centrado */
+#video-container {
+    position: relative;
+    width: 100%;
+    max-width: 300px; /* Ancho máximo para pantallas grandes */
+    margin: 0 auto; /* Centrar el contenedor */
 }
 
-/* Contenedor de la cámara */
-#video-container {
-    display: inline-block;
-    position: relative;
-    border: 5px solid red; /* Borde rojo por defecto */
+#video {
+    width: 100%;
+    height: auto;
+    border: 2px solid #ccc;
     border-radius: 10px;
-    transition: border-color 0.3s ease; /* Transición suave para el cambio de color */
+}
+
+#scanning-indicator {
+    display: none; /* Oculto por defecto */
 }
 
 /* Estilo cuando se detecta un código QR */
