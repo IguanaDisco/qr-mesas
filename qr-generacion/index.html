@@ -12,39 +12,36 @@
 <body>
     <h1>Generar Códigos QR y enlace de Invitación para Mesas</h1>
 
-    <!-- Contenedor para los formularios -->
-    <div class="formularios-container">
-        <!-- Formulario para generar invitación individual -->
-        <div class="formulario-izquierda">
-            <h2>Generar Invitación Individual</h2>
-            <form id="qr-form">
-                <label for="fecha-fiesta">Fecha de la fiesta:</label>
-                <input type="date" id="fecha-fiesta" required />
-                <label for="hora-fiesta">Hora de inicio:</label>
-                <input type="time" id="hora-fiesta" required />
-                <label for="numero-mesa">Número de Mesa:</label>
-                <select id="numero-mesa" required>
-                    <option value="">Selecciona una mesa</option>
-                </select>
-                <label for="invitado">Invitado:</label>
-                <input type="text" id="invitado" placeholder="Nombre del invitado" required />
-                <button type="submit">Generar Invitación</button>
-            </form>
-        </div>
+    <!-- Formulario para generar invitación individual -->
+    <div class="formulario-container">
+        <h2>Generar Invitación Individual</h2>
+        <form id="qr-form">
+            <label for="fecha-fiesta">Fecha de la fiesta:</label>
+            <input type="date" id="fecha-fiesta" required />
+            <label for="hora-fiesta">Hora de inicio:</label>
+            <input type="time" id="hora-fiesta" required />
+            <label for="numero-mesa">Número de Mesa:</label>
+            <select id="numero-mesa" required>
+                <option value="">Selecciona una mesa</option>
+            </select>
+            <label for="invitado">Invitado:</label>
+            <input type="text" id="invitado" placeholder="Nombre del invitado" required />
+            <button type="submit">Generar Invitación</button>
+        </form>
+    </div>
 
-        <!-- Formulario para importar Excel y generar múltiples invitaciones -->
-        <div class="formulario-derecha">
-            <h2>Generar Múltiples Invitaciones</h2>
-            <form id="form-importar-excel">
-                <label for="archivo-excel">Selecciona un archivo Excel:</label>
-                <input type="file" id="archivo-excel" accept=".xlsx, .csv" required />
-                <label for="fecha-fiesta-importar">Fecha de la fiesta:</label>
-                <input type="date" id="fecha-fiesta-importar" required />
-                <label for="hora-fiesta-importar">Hora de inicio:</label>
-                <input type="time" id="hora-fiesta-importar" required />
-                <button type="submit">Importar y Asignar Fecha/Hora</button>
-            </form>
-        </div>
+    <!-- Formulario para importar Excel y generar múltiples invitaciones -->
+    <div class="formulario-container">
+        <h2>Generar Múltiples Invitaciones</h2>
+        <form id="form-importar-excel">
+            <label for="archivo-excel">Selecciona un archivo Excel:</label>
+            <input type="file" id="archivo-excel" accept=".xlsx, .csv" required />
+            <label for="fecha-fiesta-importar">Fecha de la fiesta:</label>
+            <input type="date" id="fecha-fiesta-importar" required />
+            <label for="hora-fiesta-importar">Hora de inicio:</label>
+            <input type="time" id="hora-fiesta-importar" required />
+            <button type="submit">Importar y Asignar Fecha/Hora</button>
+        </form>
     </div>
 
     <!-- Contenedor para la invitación generada -->

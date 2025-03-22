@@ -11,23 +11,16 @@ h1, h2, h3 {
 }
 
 /* Contenedor de formularios */
-.formularios-container {
-    display: flex;
-    gap: 20px; /* Espacio entre los formularios */
-    margin-bottom: 20px;
-}
-
-/* Estilos para cada formulario */
-.formulario-izquierda, .formulario-derecha {
+.formulario-container {
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    flex: 1; /* Ambos formularios ocupan el mismo espacio */
+    margin-bottom: 20px; /* Espacio entre los formularios */
 }
 
 /* Estilos para los títulos de los formularios */
-.formulario-izquierda h2, .formulario-derecha h2 {
+.formulario-container h2 {
     margin-top: 0;
     color: #555;
 }
