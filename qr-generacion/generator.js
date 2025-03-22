@@ -245,7 +245,12 @@ function mostrarMesas(mesas) {
     const tbody = document.querySelector("#mesas-table tbody");
     tbody.innerHTML = ""; // Limpiar la tabla antes de actualizarla
 
-    for (const [numeroMesa, datos] of Object.entries(mesas)) {
+    // Convertir las claves de las mesas a números y ordenarlas
+    const mesasOrdenadas = Object.entries(mesas)
+        .map(([numeroMesa, datos]) => ({ numeroMesa: Number(numeroMesa), datos }))
+        .sort((a, b) => a.numeroMesa - b.numeroMesa);
+
+    for (const { numeroMesa, datos } of mesasOrdenadas) {
         if (datos.invitados && datos.invitados.length > 0) {
             datos.invitados.forEach((invitado) => {
                 const fila = document.createElement("tr");
