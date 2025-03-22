@@ -4,37 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generar Códigos QR</title>
-    <link rel="stylesheet" href="styles-generator.css"> <!-- Enlace al archivo CSS -->
+    <link rel="stylesheet" href="styles-generator.css">
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script type="module" src="generator.js"></script>
 </head>
 <body>
     <h1>Generar Códigos QR y enlace de Invitación para Mesas</h1>
-    <form id="qr-form">
-        <!-- Fecha de la fiesta -->
-        <label for="fecha-fiesta">Fecha de la fiesta:</label>
-        <input type="date" id="fecha-fiesta" required />
 
-        <!-- Hora de inicio -->
-        <label for="hora-fiesta">Hora de inicio:</label>
-        <input type="time" id="hora-fiesta" required />
+    <!-- Contenedor para los formularios -->
+    <div class="formularios-container">
+        <!-- Formulario para generar invitación individual -->
+        <div class="formulario-izquierda">
+            <h2>Generar Invitación Individual</h2>
+            <form id="qr-form">
+                <label for="fecha-fiesta">Fecha de la fiesta:</label>
+                <input type="date" id="fecha-fiesta" required />
+                <label for="hora-fiesta">Hora de inicio:</label>
+                <input type="time" id="hora-fiesta" required />
+                <label for="numero-mesa">Número de Mesa:</label>
+                <select id="numero-mesa" required>
+                    <option value="">Selecciona una mesa</option>
+                </select>
+                <label for="invitado">Invitado:</label>
+                <input type="text" id="invitado" placeholder="Nombre del invitado" required />
+                <button type="submit">Generar Invitación</button>
+            </form>
+        </div>
 
-        <!-- Número de mesa -->
-        <label for="numero-mesa">Número de Mesa:</label>
-        <select id="numero-mesa" required>
-            <option value="">Selecciona una mesa</option>
-            <!-- Las opciones se generarán dinámicamente con JavaScript -->
-        </select>
+        <!-- Formulario para importar Excel y generar múltiples invitaciones -->
+        <div class="formulario-derecha">
+            <h2>Generar Múltiples Invitaciones</h2>
+            <form id="form-importar-excel">
+                <label for="archivo-excel">Selecciona un archivo Excel:</label>
+                <input type="file" id="archivo-excel" accept=".xlsx, .csv" required />
+                <label for="fecha-fiesta-importar">Fecha de la fiesta:</label>
+                <input type="date" id="fecha-fiesta-importar" required />
+                <label for="hora-fiesta-importar">Hora de inicio:</label>
+                <input type="time" id="hora-fiesta-importar" required />
+                <button type="submit">Importar y Asignar Fecha/Hora</button>
+            </form>
+        </div>
+    </div>
 
-        <!-- Invitado -->
-        <label for="invitado">Invitado:</label>
-        <input type="text" id="invitado" placeholder="Nombre del invitado" required />
-
-        <!-- Botón para generar el código QR -->
-        <button type="submit">Generar Invitación</button>
-    </form>
-
+    <!-- Contenedor para la invitación generada -->
     <div id="invitacion-container" style="display: none;">
         <h3>Invitación generada:</h3>
         <div id="qr-code" class="hidden"></div>
@@ -42,6 +55,7 @@
         <a id="enviar-whatsapp" target="_blank">Enviar por WhatsApp</a>
     </div>
 
+    <!-- Lista de invitados -->
     <div id="lista-mesas">
         <h2>Lista de Invitados</h2>
         <table id="mesas-table">
@@ -59,24 +73,10 @@
         </table>
     </div>
 
-    <!-- Nuevo formulario para importar Excel -->
-    <div id="importar-excel">
-        <h2>Importar desde Excel</h2>
-        <form id="form-importar-excel">
-            <label for="archivo-excel">Selecciona un archivo Excel:</label>
-            <input type="file" id="archivo-excel" accept=".xlsx, .csv" required />
-            <label for="fecha-fiesta-importar">Fecha de la fiesta:</label>
-            <input type="date" id="fecha-fiesta-importar" required />
-            <label for="hora-fiesta-importar">Hora de inicio:</label>
-            <input type="time" id="hora-fiesta-importar" required />
-            <button type="submit">Importar y Asignar Fecha/Hora</button>
-        </form>
-    </div>
-
     <script>
         // Generar dinámicamente las 20 opciones de mesas
         const selectMesa = document.getElementById('numero-mesa');
-        const totalMesas = 20; // Número total de mesas
+        const totalMesas = 20;
 
         for (let i = 1; i <= totalMesas; i++) {
             const option = document.createElement('option');
@@ -85,18 +85,18 @@
             selectMesa.appendChild(option);
         }
 
-        // Seleccionar los elementos del formulario
+        // Seleccionar los elementos del formulario principal
         const fechaFiesta = document.getElementById('fecha-fiesta');
         const horaFiesta = document.getElementById('hora-fiesta');
         const numeroMesa = document.getElementById('numero-mesa');
-        const invitado = document.getElementById('invitado'); // Cambiado de "invitados" a "invitado"
+        const invitado = document.getElementById('invitado');
 
         // Función para guardar los valores en localStorage
         function guardarValores() {
             localStorage.setItem('fechaFiesta', fechaFiesta.value);
             localStorage.setItem('horaFiesta', horaFiesta.value);
             localStorage.setItem('numeroMesa', numeroMesa.value);
-            localStorage.setItem('invitado', invitado.value); // Cambiado de "invitados" a "invitado"
+            localStorage.setItem('invitado', invitado.value);
         }
 
         // Función para cargar los valores desde localStorage
@@ -104,23 +104,22 @@
             const fechaGuardada = localStorage.getItem('fechaFiesta');
             const horaGuardada = localStorage.getItem('horaFiesta');
             const mesaGuardada = localStorage.getItem('numeroMesa');
-            const invitadoGuardado = localStorage.getItem('invitado'); // Cambiado de "invitados" a "invitado"
+            const invitadoGuardado = localStorage.getItem('invitado');
 
             if (fechaGuardada) fechaFiesta.value = fechaGuardada;
             if (horaGuardada) horaFiesta.value = horaGuardada;
             if (mesaGuardada) numeroMesa.value = mesaGuardada;
-            if (invitadoGuardado) invitado.value = invitadoGuardado; // Cambiado de "invitados" a "invitado"
+            if (invitadoGuardado) invitado.value = invitadoGuardado;
         }
 
         // Eventos para guardar los valores cuando cambian
         fechaFiesta.addEventListener('change', guardarValores);
         horaFiesta.addEventListener('change', guardarValores);
         numeroMesa.addEventListener('change', guardarValores);
-        invitado.addEventListener('change', guardarValores); // Cambiado de "invitados" a "invitado"
+        invitado.addEventListener('change', guardarValores);
 
         // Cargar los valores cuando la página se carga
         window.addEventListener('load', cargarValores);
     </script>
-    
 </body>
 </html>

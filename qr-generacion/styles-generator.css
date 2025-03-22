@@ -1,154 +1,115 @@
+/* Estilos generales */
 body {
     font-family: Arial, sans-serif;
-    text-align: center;
-    margin-top: 50px;
+    margin: 0;
+    padding: 20px;
     background-color: #f4f4f4;
+}
+
+h1, h2, h3 {
     color: #333;
 }
 
-h1 {
-    color: #333;
+/* Contenedor de formularios */
+.formularios-container {
+    display: flex;
+    gap: 20px; /* Espacio entre los formularios */
+    margin-bottom: 20px;
 }
 
-#qr-form {
-    margin: 20px auto;
-    max-width: 300px;
+/* Estilos para cada formulario */
+.formulario-izquierda, .formulario-derecha {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex: 1; /* Ambos formularios ocupan el mismo espacio */
 }
 
-#qr-form label {
+/* Estilos para los títulos de los formularios */
+.formulario-izquierda h2, .formulario-derecha h2 {
+    margin-top: 0;
+    color: #555;
+}
+
+/* Estilos para los inputs y botones */
+label {
     display: block;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     font-weight: bold;
 }
 
-#qr-form input, #qr-form select {
+input[type="date"],
+input[type="time"],
+input[type="text"],
+select,
+button {
     width: 100%;
     padding: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 4px;
     font-size: 16px;
 }
 
-#qr-form select {
-    height: 40px;
-    background-color: #f9f9f9;
-    cursor: pointer;
-}
-
-#qr-form select option {
-    font-size: 14px;
-    padding: 5px;
-}
-
-#qr-form button {
-    padding: 10px 20px;
-    background-color: #008CBA;
+button {
+    background-color: #28a745;
     color: white;
     border: none;
-    border-radius: 5px;
     cursor: pointer;
-    font-size: 16px;
 }
 
-#qr-form button:hover {
-    background-color: #007B9E;
-}
-
-#invitacion-container {
-    border: 1px solid #ccc;
-    padding: 20px;
-    margin-top: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-}
-
-#invitacion-texto {
-    font-size: 16px;
-    margin-bottom: 15px;
-}
-
-#qr-code, #invitacion-container {
-    margin: 15px 0;
-    transition: opacity 0.3s ease;
-}
-
-#enviar-whatsapp {
-    display: inline-block;
-    background-color: #25D366;
-    color: white;
-    padding: 10px 15px;
-    text-decoration: none;
-    border-radius: 5px;
-    margin-top: 10px;
-}
-
-#enviar-whatsapp:hover {
-    background-color: #128C7E;
-}
-
-#qr-code {
-    margin-top: 20px;
+button:hover {
+    background-color: #218838;
 }
 
 /* Estilos para la tabla */
-#mesas-table {
-    width: 100%;
-    border-collapse: collapse;
+#lista-mesas {
     margin-top: 20px;
 }
 
-#mesas-table th, #mesas-table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-#mesas-table th {
-    background-color: #f2f2f2;
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f8f9fa;
     font-weight: bold;
 }
 
-#mesas-table tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-#mesas-table tr:hover {
-    background-color: #f1f1f1;
-}
-
-/* Estilos para el botón de eliminar */
-.boton-eliminar {
-    background-color: #ff4d4d; /* Rojo */
-    color: white;
-    border: none;
+/* Estilos para los botones de acciones */
+.boton-mostrar, .boton-eliminar {
     padding: 5px 10px;
-    border-radius: 5px;
+    margin-right: 5px;
+    border: none;
+    border-radius: 4px;
     cursor: pointer;
     font-size: 14px;
 }
 
-.boton-eliminar:hover {
-    background-color: #ff1a1a; /* Rojo más oscuro al pasar el mouse */
-}
-
-/* Estilos para el botón de mostrar */
 .boton-mostrar {
-    background-color: #4CAF50; /* Verde */
+    background-color: #007bff;
     color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    margin-right: 5px; /* Espacio entre botones */
 }
 
 .boton-mostrar:hover {
-    background-color: #45a049; /* Verde más oscuro al pasar el mouse */
+    background-color: #0056b3;
 }
 
-/* Estilo para ocultar el código QR */
-.hidden {
-    display: none;
+.boton-eliminar {
+    background-color: #dc3545;
+    color: white;
+}
+
+.boton-eliminar:hover {
+    background-color: #c82333;
 }
