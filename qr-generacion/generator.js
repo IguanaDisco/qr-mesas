@@ -203,6 +203,7 @@ async function cargarDatosEnFirebase(datos, fechaFiesta, horaFiesta) {
 
 // Evento para subir el archivo Excel
 document.getElementById('archivo-excel').addEventListener('change', async (e) => {
+    console.log("Archivo seleccionado:", e.target.files[0]); // Verifica si el archivo se detecta
     const archivo = e.target.files[0];
     if (!archivo) return;
 
@@ -450,3 +451,5 @@ qrForm.addEventListener("submit", async (e) => {
         alert("Por favor, completa todos los campos.");
     }
 });
+
+console.log("El archivo generator.js se ha cargado correctamente.");
