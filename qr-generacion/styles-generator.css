@@ -128,6 +128,32 @@ table {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* Estilos para los controles de paginación */
+#paginacion-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#paginacion-container button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    margin: 0 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#paginacion-container button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+#paginacion-container span {
+    margin: 0 10px;
+    font-size: 16px;
+}
+
 th, td {
     padding: 12px;
     text-align: left;
