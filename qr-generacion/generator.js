@@ -211,82 +211,22 @@ document.getElementById('form-importar-excel').addEventListener('submit', async 
     }
 });
 
-let invitadoActual = null; // Almacena el nombre del invitado actualmente visible
-let botonActivo = null; // Almacena el botón que está actualmente activo
+// Mostrar el nombre del archivo seleccionado
+document.addEventListener("DOMContentLoaded", () => {
+    const fileInput = document.getElementById('archivo-excel');
+    const fileNameSpan = document.getElementById('file-name');
 
-// Función para mostrar el código QR
-function mostrarQR(qrImageUrl, botonMostrar, datosMesa) {
-    const qrContainer = document.getElementById("qr-code");
-    const invitacionContainer = document.getElementById("invitacion-container");
-    const invitacionTexto = document.getElementById("invitacion-texto");
-    const enviarWhatsApp = document.getElementById("enviar-whatsapp");
-
-    // Si se hace clic en el botón del invitado actual, ocultar el código QR y la invitación
-    if (invitadoActual === datosMesa.invitado) {
-        qrContainer.innerHTML = ""; // Limpiar el contenido
-        qrContainer.classList.add("hidden"); // Ocultar el código QR
-        invitacionContainer.style.display = "none"; // Ocultar la invitación
-
-        // Cambiar el texto del botón a "MOSTRAR"
-        botonMostrar.textContent = "MOSTRAR";
-
-        // Limpiar el invitado actualmente visible y el botón activo
-        invitadoActual = null;
-        botonActivo = null;
-        return; // Salir de la función
-    }
-
-    // Ocultar la información del invitado anterior (si hay uno)
-    if (invitadoActual !== null) {
-        qrContainer.innerHTML = ""; // Limpiar el contenido
-        qrContainer.classList.add("hidden"); // Ocultar el código QR
-        invitacionContainer.style.display = "none"; // Ocultar la invitación
-
-        // Cambiar el texto del botón activo a "MOSTRAR"
-        if (botonActivo) {
-            botonActivo.textContent = "MOSTRAR";
+    fileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0]; // Obtener el archivo seleccionado
+        if (file) {
+            fileNameSpan.textContent = file.name; // Mostrar el nombre del archivo
+        } else {
+            fileNameSpan.textContent = ''; // Limpiar el nombre si no hay archivo
         }
-    }
+    });
+});
 
-    // Ocultar el código QR generado previamente
-    qrContainer.innerHTML = "";
-
-    // Mostrar la invitación existente
-    invitacionTexto.innerHTML = `
-        <p>
-            Quiero invitarte a mi fiesta 🎉<br>
-            Fecha: ${datosMesa.fechaFiesta}<br>
-            Hora: ${datosMesa.horaFiesta}<br>
-            Debe presentar este código QR en portería.<br>
-            Mesa: ${datosMesa.numeroMesa}<br>
-            Invitado: ${datosMesa.invitado}
-        </p>
-        <img src="${qrImageUrl}" alt="Código QR" style="max-width: 200px;">
-    `;
-    invitacionContainer.style.display = "block";
-
-    // Actualizar el enlace de WhatsApp
-    const mensajeWhatsApp = encodeURIComponent(`
-        Quiero invitarte a mi fiesta 🎉
-        Fecha: ${datosMesa.fechaFiesta}
-        Hora: ${datosMesa.horaFiesta}
-        Debe presentar este código QR en portería.
-
-        Mesa: ${datosMesa.numeroMesa}
-        Invitado: ${datosMesa.invitado}
-
-        Ver el código QR: ${qrImageUrl}
-    `);
-    enviarWhatsApp.href = `https://wa.me/?text=${mensajeWhatsApp}`;
-
-    // Cambiar el texto del botón a "OCULTAR"
-    botonMostrar.textContent = "OCULTAR";
-
-    // Actualizar el invitado actualmente visible y el botón activo
-    invitadoActual = datosMesa.invitado;
-    botonActivo = botonMostrar;
-}
-
+// Función para mostrar las mesas ordenadas por número de mesa
 function mostrarMesas(mesas) {
     const tbody = document.querySelector("#mesas-table tbody");
     tbody.innerHTML = ""; // Limpiar la tabla antes de actualizarla
@@ -349,122 +289,6 @@ function mostrarMesas(mesas) {
             });
         }
     });
-}
-
-let paginaActual = 1;
-const registrosPorPagina = 50; // Mostrar 50 registros por página
-
-function mostrarMesas(mesas, pagina = 1) {
-    const tbody = document.querySelector("#mesas-table tbody");
-    tbody.innerHTML = "";
-
-    const mesasOrdenadas = Object.entries(mesas)
-        .map(([numeroMesa, datos]) => ({ numeroMesa: Number(numeroMesa), datos }))
-        .sort((a, b) => a.numeroMesa - b.numeroMesa);
-
-    const inicio = (pagina - 1) * registrosPorPagina;
-    const fin = inicio + registrosPorPagina;
-    const mesasPaginadas = mesasOrdenadas.slice(inicio, fin);
-
-    mesasPaginadas.forEach(({ numeroMesa, datos }) => {
-        if (datos.invitados && datos.invitados.length > 0) {
-            datos.invitados.forEach((invitado) => {
-                const fila = document.createElement("tr");
-                // Renderizar la fila (igual que antes)
-                tbody.appendChild(fila);
-            });
-        }
-    });
-
-    // Actualizar la paginación
-    actualizarPaginacion(mesasOrdenadas.length);
-}
-
-function actualizarPaginacion(totalRegistros) {
-    const totalPaginas = Math.ceil(totalRegistros / registrosPorPagina);
-    console.log(`Total de páginas: ${totalPaginas}`);
-    // Aquí puedes agregar botones de paginación (anterior, siguiente, etc.)
-}
-
-function filtrarInvitados(mesas, filtro) {
-    const mesasOrdenadas = Object.entries(mesas)
-        .map(([numeroMesa, datos]) => ({ numeroMesa: Number(numeroMesa), datos }))
-        .sort((a, b) => a.numeroMesa - b.numeroMesa);
-
-    const resultadosFiltrados = mesasOrdenadas.filter(({ numeroMesa, datos }) => {
-        return datos.invitados.some((invitado) =>
-            invitado.nombre.toLowerCase().includes(filtro.toLowerCase()) ||
-            numeroMesa.toString().includes(filtro)
-        );
-    });
-
-    mostrarMesas(resultadosFiltrados);
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-    const fileInput = document.getElementById('archivo-excel');
-    const fileNameSpan = document.getElementById('file-name');
-
-    fileInput.addEventListener('change', (e) => {
-        const file = e.target.files[0]; // Obtener el archivo seleccionado
-        if (file) {
-            fileNameSpan.textContent = file.name; // Mostrar el nombre del archivo
-        } else {
-            fileNameSpan.textContent = ''; // Limpiar el nombre si no hay archivo
-        }
-    });
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-    const mesasRef = ref(database, "mesas");
-    onValue(mesasRef, (snapshot) => {
-        const mesas = snapshot.val();
-        console.log("Datos de Firebase:", mesas); // Verifica los datos recuperados
-        if (mesas) {
-            mostrarMesas(mesas);
-        } else {
-            document.querySelector("#mesas-table tbody").innerHTML = "<tr><td colspan='3'>No hay mesas generadas.</td></tr>";
-        }
-    });
-});
-
-// Función para eliminar una mesa de Firebase
-function eliminarMesa(numeroMesa) {
-    const mesaRef = ref(database, `mesas/${numeroMesa}`);
-    remove(mesaRef)
-        .then(() => {
-            console.log(`Mesa ${numeroMesa} eliminada de Firebase.`);
-        })
-        .catch((error) => {
-            console.error("Error al eliminar la mesa:", error);
-            alert("Hubo un error al eliminar la mesa. Inténtalo de nuevo.");
-        });
-}
-
-function eliminarInvitado(numeroMesa, nombreInvitado) {
-    if (confirm(`¿Estás seguro de que quieres eliminar a ${nombreInvitado} de la mesa ${numeroMesa}?`)) {
-        const mesaRef = ref(database, `mesas/${numeroMesa}/invitados`);
-        get(mesaRef).then((snapshot) => {
-            if (snapshot.exists()) {
-                let invitados = snapshot.val();
-                // Filtrar el invitado que se desea eliminar
-                invitados = invitados.filter((invitado) => invitado.nombre !== nombreInvitado);
-                // Guardar la lista actualizada en Firebase
-                set(mesaRef, invitados)
-                    .then(() => {
-                        console.log(`Invitado ${nombreInvitado} eliminado de la mesa ${numeroMesa}.`);
-                        alert(`Invitado ${nombreInvitado} eliminado correctamente.`);
-                    })
-                    .catch((error) => {
-                        console.error("Error al eliminar el invitado:", error);
-                        alert("Hubo un error al eliminar el invitado. Inténtalo de nuevo.");
-                    });
-            }
-        }).catch((error) => {
-            console.error("Error al obtener los datos de Firebase:", error);
-            alert("Hubo un error al obtener los datos de Firebase. Inténtalo de nuevo.");
-        });
-    }
 }
 
 // Escuchar cambios en la lista de mesas
