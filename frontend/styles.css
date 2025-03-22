@@ -38,12 +38,13 @@ h1 {
 }
 
 #qr-image-container {
+    width: 100%; /* Ocupar todo el ancho disponible */
     text-align: center; /* Centrar horizontalmente */
     margin-top: 10px; /* Espacio superior */
 }
 
 #qr-image {
-    max-width: 100%; /* Ajustar el ancho de la imagen */
+    max-width: 300px; /* Ancho máximo de la imagen */
     height: auto; /* Mantener la proporción */
     display: none; /* Ocultar por defecto */
 }

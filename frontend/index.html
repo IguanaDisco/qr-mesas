@@ -15,18 +15,19 @@
         <video id="video" width="300" height="200" autoplay></video>
         <p id="scanning-indicator" style="color: white; background-color: rgba(0, 0, 0, 0.5); padding: 5px;">Escaneando...</p>
     </div>
+
+        <!-- Botones adicionales -->
+        <button id="btn-detener-camara" style="margin-top: 10px;">Detener Cámara</button>
+        <button id="btn-reiniciar" style="margin-top: 10px;">Reiniciar Escaneo</button>
+
     <canvas id="canvas" style="display:none;"></canvas>
     <p id="result"></p>
 
-    <!-- Botones adicionales -->
-    <button id="btn-detener-camara" style="margin-top: 10px;">Detener Cámara</button>
-    <button id="btn-reiniciar" style="margin-top: 10px;">Reiniciar Escaneo</button>
-
     <p id="result"></p>
-<div id="qr-image-container" style="text-align: center; margin-top: 10px;">
-    <img id="qr-image" src="" alt="Código QR escaneado" style="display: none; max-width: 100%; height: auto;">
-</div>
-
+    <div id="qr-image-container" style="width: 100%; text-align: center; margin-top: 10px;">
+        <img id="qr-image" src="" alt="Código QR escaneado" style="display: none; max-width: 100%; height: auto;">
+    </div>
+    
     <button id="btn-mostrar-mesas">Mostrar Estado de las Mesas</button>
 
     <!-- Sección para mostrar el estado de las mesas (oculta por defecto) -->
