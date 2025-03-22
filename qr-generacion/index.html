@@ -10,64 +10,66 @@
     <script type="module" src="generator.js"></script>
 </head>
 <body>
-    <h1>Generar Códigos QR y enlace de Invitación para Mesas</h1>
+    <div class="container">
+        <h1>Generar Códigos QR y enlace de Invitación para Mesas</h1>
 
-    <!-- Formulario para generar invitación individual -->
-    <div class="formulario-container">
-        <h2>Generar Invitación Individual</h2>
-        <form id="qr-form">
-            <label for="fecha-fiesta">Fecha de la fiesta:</label>
-            <input type="date" id="fecha-fiesta" required />
-            <label for="hora-fiesta">Hora de inicio:</label>
-            <input type="time" id="hora-fiesta" required />
-            <label for="numero-mesa">Número de Mesa:</label>
-            <select id="numero-mesa" required>
-                <option value="">Selecciona una mesa</option>
-            </select>
-            <label for="invitado">Invitado:</label>
-            <input type="text" id="invitado" placeholder="Nombre del invitado" required />
-            <button type="submit">Generar Invitación</button>
-        </form>
-    </div>
+        <!-- Formulario para generar invitación individual -->
+        <div class="formulario-container">
+            <h2>Generar Invitación Individual</h2>
+            <form id="qr-form">
+                <label for="fecha-fiesta">Fecha de la fiesta:</label>
+                <input type="date" id="fecha-fiesta" required />
+                <label for="hora-fiesta">Hora de inicio:</label>
+                <input type="time" id="hora-fiesta" required />
+                <label for="numero-mesa">Número de Mesa:</label>
+                <select id="numero-mesa" required>
+                    <option value="">Selecciona una mesa</option>
+                </select>
+                <label for="invitado">Invitado:</label>
+                <input type="text" id="invitado" placeholder="Nombre del invitado" required />
+                <button type="submit">Generar Invitación</button>
+            </form>
+        </div>
 
-    <!-- Formulario para importar Excel y generar múltiples invitaciones -->
-    <div class="formulario-container">
-        <h2>Generar Múltiples Invitaciones</h2>
-        <form id="form-importar-excel">
-            <label for="archivo-excel">Selecciona un archivo Excel:</label>
-            <input type="file" id="archivo-excel" accept=".xlsx, .csv" required />
-            <label for="fecha-fiesta-importar">Fecha de la fiesta:</label>
-            <input type="date" id="fecha-fiesta-importar" required />
-            <label for="hora-fiesta-importar">Hora de inicio:</label>
-            <input type="time" id="hora-fiesta-importar" required />
-            <button type="submit">Importar y Asignar Fecha/Hora</button>
-        </form>
-    </div>
+        <!-- Formulario para importar Excel y generar múltiples invitaciones -->
+        <div class="formulario-container">
+            <h2>Generar Múltiples Invitaciones</h2>
+            <form id="form-importar-excel">
+                <label for="archivo-excel">Selecciona un archivo Excel:</label>
+                <input type="file" id="archivo-excel" accept=".xlsx, .csv" required />
+                <label for="fecha-fiesta-importar">Fecha de la fiesta:</label>
+                <input type="date" id="fecha-fiesta-importar" required />
+                <label for="hora-fiesta-importar">Hora de inicio:</label>
+                <input type="time" id="hora-fiesta-importar" required />
+                <button type="submit">Importar y Asignar Fecha/Hora</button>
+            </form>
+        </div>
 
-    <!-- Contenedor para la invitación generada -->
-    <div id="invitacion-container" style="display: none;">
-        <h3>Invitación generada:</h3>
-        <div id="qr-code" class="hidden"></div>
-        <div id="invitacion-texto"></div>
-        <a id="enviar-whatsapp" target="_blank">Enviar por WhatsApp</a>
-    </div>
+        <!-- Contenedor para la invitación generada -->
+        <div id="invitacion-container" style="display: none;">
+            <h3>Invitación generada:</h3>
+            <div id="qr-code" class="hidden"></div>
+            <div id="invitacion-texto"></div>
+            <a id="enviar-whatsapp" target="_blank">Enviar por WhatsApp</a>
+        </div>
 
-    <!-- Lista de invitados -->
-    <div id="lista-mesas">
-        <h2>Lista de Invitados</h2>
-        <table id="mesas-table">
-            <thead>
-                <tr>
-                    <th>Número de Mesa</th>
-                    <th>Invitado</th>
-                    <th>Estado de Escaneado</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Las filas de la tabla se generarán dinámicamente -->
-            </tbody>
-        </table>
+        <!-- Lista de invitados -->
+        <div id="lista-mesas">
+            <h2>Lista de Invitados</h2>
+            <table id="mesas-table">
+                <thead>
+                    <tr>
+                        <th>Número de Mesa</th>
+                        <th>Invitado</th>
+                        <th>Estado de Escaneado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Las filas de la tabla se generarán dinámicamente -->
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <script>

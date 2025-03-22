@@ -2,12 +2,26 @@
 body {
     font-family: Arial, sans-serif;
     margin: 0;
-    padding: 20px;
+    padding: 0;
     background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centrar horizontalmente */
+    justify-content: center; /* Centrar verticalmente */
+    min-height: 100vh; /* Ocupar toda la altura de la pantalla */
 }
 
 h1, h2, h3 {
     color: #333;
+    text-align: center; /* Centrar los títulos */
+}
+
+/* Contenedor principal */
+.container {
+    width: 100%;
+    max-width: 1200px; /* Ancho máximo para pantallas grandes */
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 /* Contenedor de formularios */
@@ -17,12 +31,16 @@ h1, h2, h3 {
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px; /* Espacio entre los formularios */
+    width: 100%;
+    max-width: 600px; /* Ancho máximo para los formularios */
+    margin: 0 auto; /* Centrar horizontalmente */
 }
 
 /* Estilos para los títulos de los formularios */
 .formulario-container h2 {
     margin-top: 0;
     color: #555;
+    text-align: center; /* Centrar el título del formulario */
 }
 
 /* Estilos para los inputs y botones */
@@ -43,6 +61,7 @@ button {
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 16px;
+    box-sizing: border-box; /* Incluir padding en el ancho */
 }
 
 button {
@@ -59,6 +78,9 @@ button:hover {
 /* Estilos para la tabla */
 #lista-mesas {
     margin-top: 20px;
+    width: 100%;
+    max-width: 1200px; /* Ancho máximo para la tabla */
+    overflow-x: auto; /* Permitir desplazamiento horizontal en pantallas pequeñas */
 }
 
 table {
@@ -105,4 +127,57 @@ th {
 
 .boton-eliminar:hover {
     background-color: #c82333;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    .formulario-container {
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    input[type="date"],
+    input[type="time"],
+    input[type="text"],
+    select,
+    button {
+        font-size: 14px;
+    }
+
+    table {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .formulario-container {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+
+    h2 {
+        font-size: 18px;
+    }
+
+    input[type="date"],
+    input[type="time"],
+    input[type="text"],
+    select,
+    button {
+        font-size: 12px;
+    }
+
+    table {
+        font-size: 12px;
+    }
 }
