@@ -59,8 +59,11 @@ async function generarQR(numeroMesa, invitado, fechaFiesta, horaFiesta) {
     try {
         console.log("Datos para el código QR:", { numeroMesa, invitado, fechaFiesta, horaFiesta });
 
-        // Guardar los datos en Firebase sin generar el código QR
-        await guardarMesa(numeroMesa, invitado, null, fechaFiesta, horaFiesta);
+        // Generar y subir el código QR
+        const qrImageUrl = await generarYSubirQR(numeroMesa, invitado, fechaFiesta, horaFiesta);
+
+        // Guardar los datos en Firebase, incluyendo la URL del código QR
+        await guardarMesa(numeroMesa, invitado, qrImageUrl, fechaFiesta, horaFiesta);
 
         alert("Invitación generada y guardada en Firebase correctamente.");
     } catch (error) {
@@ -105,17 +108,17 @@ function guardarMesa(numeroMesa, invitado, qrImageUrl, fechaFiesta, horaFiesta) 
     const mesaRef = ref(database, `mesas/${numeroMesa}/invitados`);
     const nuevoInvitado = {
         nombre: invitado,
-        qrImageUrl, // Puede ser null si no se genera un código QR
+        qrImageUrl, // Aquí se guarda la URL del código QR
         fechaFiesta,
         horaFiesta,
-        Escaneado: false // Agregar el campo "Escaneado"
+        Escaneado: false
     };
 
     // Obtener la lista actual de invitados
     get(mesaRef).then((snapshot) => {
         let invitados = [];
         if (snapshot.exists()) {
-            invitados = snapshot.val(); // Si ya hay invitados, obtener la lista actual
+            invitados = snapshot.val();
         }
         invitados.push(nuevoInvitado); // Agregar el nuevo invitado
 
