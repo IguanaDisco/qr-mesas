@@ -178,6 +178,10 @@ th {
     display: none; /* Ocultar por defecto */
 }
 
+#invitacion-container h3 {
+    color: #000; /* Color negro */
+}
+
 /* Estilos para el botón "Enviar por WhatsApp" */
 #enviar-whatsapp {
     display: inline-block;
