@@ -36,6 +36,11 @@ h1, h2, h3 {
     margin: 0 auto; /* Centrar horizontalmente */
 }
 
+/* Añadir margen inferior al primer formulario */
+#qr-form {
+    margin-bottom: 40px; /* Aumenta este valor para separar más los formularios */
+}
+
 /* Estilos para los títulos de los formularios */
 .formulario-container h2 {
     margin-top: 0;
@@ -129,6 +134,35 @@ th {
     background-color: #c82333;
 }
 
+/* Estilos para el contenedor de la invitación */
+#invitacion-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 20px auto; /* Centrar horizontalmente */
+    text-align: center; /* Centrar el contenido interno */
+    max-width: 600px; /* Ancho máximo */
+    display: none; /* Ocultar por defecto */
+}
+
+/* Estilos para el botón "Enviar por WhatsApp" */
+#enviar-whatsapp {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: #28a745; /* Color verde */
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+#enviar-whatsapp:hover {
+    background-color: #218838; /* Color verde más oscuro al pasar el mouse */
+}
+
 /* Estilos responsivos */
 @media (max-width: 768px) {
     .formulario-container {
@@ -180,33 +214,4 @@ th {
     table {
         font-size: 12px;
     }
-}
-
-/* Estilos para el contenedor de la invitación */
-#invitacion-container {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin: 20px auto; /* Centrar horizontalmente */
-    text-align: center; /* Centrar el contenido interno */
-    max-width: 600px; /* Ancho máximo */
-    display: none; /* Ocultar por defecto */
-}
-
-/* Estilos para el botón "Enviar por WhatsApp" */
-#enviar-whatsapp {
-    display: inline-block;
-    margin-top: 15px;
-    padding: 10px 20px;
-    background-color: #28a745; /* Color verde */
-    color: white;
-    text-decoration: none;
-    border-radius: 4px;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
-}
-
-#enviar-whatsapp:hover {
-    background-color: #218838; /* Color verde más oscuro al pasar el mouse */
 }
