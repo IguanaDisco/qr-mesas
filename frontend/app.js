@@ -175,10 +175,14 @@ function actualizarEstadoMesa(numeroMesa, invitado, escaneado) {
 // Función para mostrar/ocultar el estado de las mesas
 btnMostrarMesas.addEventListener("click", () => {
     if (mesasContainer.style.display === "none") {
-        mesasContainer.style.display = "block"; // Mostrar la lista
-        mostrarEstadoMesas(); // Actualizar la lista
+        // Mostrar la lista de invitados
+        mesasContainer.style.display = "block";
+        btnMostrarMesas.innerText = "Ocultar Lista de Invitados"; // Cambiar el texto del botón
+        mostrarEstadoMesas(); // Actualizar la lista de mesas
     } else {
-        mesasContainer.style.display = "none"; // Ocultar la lista
+        // Ocultar la lista de invitados
+        mesasContainer.style.display = "none";
+        btnMostrarMesas.innerText = "Mostrar Lista de Invitados"; // Cambiar el texto del botón
     }
 });
 
