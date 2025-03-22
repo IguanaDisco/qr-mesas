@@ -101,6 +101,15 @@ function verificarExistenciaMesa(data) {
                 if (invitadoEncontrado) {
                     result.innerText = `Mesa escaneada: ${numeroMesa}\nInvitado: ${invitadoEncontrado.nombre}`;
 
+                    // Mostrar la imagen del código QR si está disponible
+                    const qrImage = document.getElementById("qr-image");
+                    if (invitadoEncontrado.qrImageUrl) {
+                        qrImage.src = invitadoEncontrado.qrImageUrl; // Establecer la URL de la imagen
+                        qrImage.style.display = "block"; // Mostrar la imagen
+                    } else {
+                        qrImage.style.display = "none"; // Ocultar la imagen si no hay URL
+                    }
+
                     if (!invitadoEncontrado.Escaneado) {
                         alert("Código QR correcto"); // Mensaje cuando se escanea por primera vez
                         actualizarEstadoMesa(numeroMesa, invitado, true); // Cambiar a "Escaneado: true"
@@ -172,6 +181,10 @@ btnReiniciar.addEventListener("click", () => {
     videoContainer.classList.remove("detected"); // Restablecer el borde
     scanningIndicator.innerText = "Escaneando..."; // Restaurar el texto del indicador
     scanningIndicator.style.backgroundColor = "rgba(0, 0, 0, 0.5)"; // Restaurar el color de fondo
+
+    // Ocultar la imagen del código QR
+    const qrImage = document.getElementById("qr-image");
+    qrImage.style.display = "none";
 });
 
 // Función para detener la cámara
