@@ -37,12 +37,14 @@ h1 {
     display: none; /* Oculto por defecto */
 }
 
+/* Estilos para el contenedor de la imagen del código QR */
 #qr-image-container {
     width: 100%; /* Ocupar todo el ancho disponible */
     text-align: center; /* Centrar horizontalmente */
     margin-top: 10px; /* Espacio superior */
 }
 
+/* Estilos para la imagen del código QR */
 #qr-image {
     max-width: 300px; /* Ancho máximo de la imagen */
     height: auto; /* Mantener la proporción */
