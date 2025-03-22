@@ -118,14 +118,20 @@ function verificarExistenciaMesa(data) {
                     }
                 } else {
                     result.innerText = `Invitado no válido en la mesa ${numeroMesa}.`;
+                    qrImage.style.display = "none"; // Ocultar la imagen si el invitado no es válido
                 }
             } else {
                 result.innerText = `Mesa no válida: ${numeroMesa}`;
+                qrImage.style.display = "none"; // Ocultar la imagen si la mesa no es válida
             }
         }, { onlyOnce: true }); // Escuchar solo una vez para evitar múltiples alertas
     } catch (error) {
         console.error("Error al decodificar el código QR:", error);
         result.innerText = "Código QR no válido o formato incorrecto.";
+
+        // Ocultar la imagen del código QR si hay un error
+        const qrImage = document.getElementById("qr-image");
+        qrImage.style.display = "none";
     } finally {
         isScanning = true; // Restablecer el escaneo
     }
