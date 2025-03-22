@@ -38,7 +38,7 @@ h1, h2, h3 {
 
 /* Añadir margen inferior al primer formulario */
 #qr-form {
-    margin-bottom: 40px; /* Aumenta este valor para separar más los formularios */
+    margin-bottom: 100px; /* Aumenta este valor para separar más los formularios */
 }
 
 /* Estilos para los títulos de los formularios */
